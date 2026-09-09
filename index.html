@@ -2273,6 +2273,66 @@
   }
 }
 
+
+/* ===== V17 · RESPONSES HEADER MATCHES SETUP HEADER ===== */
+.responses-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:end;
+  margin-bottom:22px;
+  padding:18px 20px;
+  background:#fff;
+  border:1px solid #dce4eb;
+  border-radius:14px;
+  box-shadow:0 2px 8px rgba(16,40,71,.05);
+}
+.responses-toolbar-main{
+  min-width:0;
+}
+.responses-toolbar-title-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:5px;
+}
+.responses-toolbar h1{
+  margin:0;
+  color:#334155;
+  font-size:18px;
+  line-height:1.2;
+}
+.responses-toolbar p{
+  margin:0;
+  color:#7a8798;
+  font-size:11px;
+  line-height:1.45;
+}
+.responses-toolbar-action{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
+.responses-toolbar-action .admin-search{
+  width:300px;
+  flex:0 0 300px;
+}
+
+@media(max-width:980px){
+  .responses-toolbar{
+    grid-template-columns:1fr;
+    align-items:stretch;
+  }
+  .responses-toolbar-action{
+    justify-content:flex-start;
+  }
+  .responses-toolbar-action .admin-search{
+    width:100%;
+    flex:1 1 100%;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2665,8 +2725,17 @@ function toggleQuestionDependency(button){
 
   <div class="admin-onboarding-panel" id="adminResponsesPanel">
     
-        <div class="admin-heading"><div class="admin-heading-copy"><h1>User responses</h1><p>Review completion status and inspect the answers submitted by each user.</p></div></div>
-        <div class="admin-toolbar"><input class="admin-search" placeholder="Search user"><span class="meta-chip">48 users</span></div>
+        <div class="responses-toolbar">
+          <div class="responses-toolbar-main">
+            <div class="responses-toolbar-title-row">
+              <h1>User responses</h1>
+            </div>
+            <p>Review completion status and inspect the answers submitted by each user.</p>
+          </div>
+          <div class="responses-toolbar-action">
+            <input class="admin-search" placeholder="Search user">
+          </div>
+        </div>
         <div class="response-table">
           <div class="response-head"><div>User</div><div>Status</div><div>Completed</div><div>Last updated</div><div></div></div>
           <div class="response-row"><div class="response-user"><div class="response-avatar">DR</div><div><strong style="color:#26364a">Daniela Ruiz Diaz</strong><div style="font-size:10px;color:#8b97a8;margin-top:2px">Alumni</div></div></div><div><span class="meta-chip active">Completed</span></div><div class="progress-mini"><div class="progress-mini-bar"><div class="progress-mini-fill" style="width:100%"></div></div><span>100%</span></div><div>Sep 8, 2026</div><button class="btn outline" onclick="openScreen('userResponseDetailScreen','setup')">View responses</button></div>
