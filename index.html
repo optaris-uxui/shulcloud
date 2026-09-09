@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShulCloud · Ramaz Connect Prototype</title>
+<style>
+:root{--navy:#173458;--navy2:#0e4b58;--teal:#168f83;--blue:#2f68ff;--green:#10a86b;--bg:#f3f6fa;--text:#18263c;--muted:#718096;--line:#dfe5ec;--white:#fff;--shadow:0 2px 7px rgba(16,40,71,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input{font:inherit}button{border:0}.screen{display:none;min-height:100vh}.screen.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+/* login */
+.login-shell{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#fff}.login-brand{background:linear-gradient(145deg,#173458 0%,#1c5870 55%,#159589 100%);color:#fff;display:flex;align-items:center;justify-content:center;padding:54px}.login-brand-inner{display:flex;align-items:center;gap:30px;max-width:650px}.seal{width:190px;height:190px;border:5px solid rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:29px;font-weight:800;letter-spacing:.12em;position:relative;flex:0 0 auto}.seal:after{content:"CONNECT";position:absolute;bottom:34px;font-size:11px;letter-spacing:.2em}.login-copy b{font-size:18px}.login-copy h1{font-size:36px;line-height:1.04;margin:8px 0 10px}.login-copy p{margin:0;color:rgba(255,255,255,.76);font-size:16px;line-height:1.45}.login-panel{display:flex;align-items:center;justify-content:center;padding:50px}.login-card{width:min(440px,100%)}.login-card h2{text-align:center;font-size:36px;color:#17325e;margin:0 0 22px}.login-btn{width:100%;height:46px;border-radius:5px;font-weight:700;cursor:pointer}.login-btn.primary{background:#213f72;color:#fff}.login-btn.secondary{background:#fff;color:#17325e;border:2px solid #17325e}.login-sep{text-align:center;margin:52px 0 24px;color:#17325e}
+/* app */
+.app-shell{min-height:100vh;display:grid;grid-template-columns:246px minmax(0,1fr)}.sidebar{position:fixed;left:0;top:0;bottom:0;width:246px;background:linear-gradient(180deg,#173458 0%,#17435d 62%,#0e4b58 100%);padding:20px 18px;color:#fff;z-index:30}.brand{display:flex;align-items:center;gap:12px;padding:10px 6px 30px}.brand-logo{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}.brand-name{font-weight:700;line-height:1.05}.nav{display:flex;flex-direction:column;gap:6px}.nav-item{height:48px;border-radius:9px;background:transparent;color:rgba(255,255,255,.64);padding:0 14px;display:flex;align-items:center;gap:13px;cursor:pointer;font-size:15px}.nav-item:hover{background:rgba(255,255,255,.07);color:#fff}.nav-item.active{background:rgba(255,255,255,.15);color:#fff}.nav-item svg{width:18px;height:18px}.main{grid-column:2;min-width:0}.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 30px 0 38px;position:sticky;top:0;z-index:20}.topbar h2{font-size:20px;margin:0}.spacer{flex:1}.top-actions{display:flex;align-items:center;gap:12px}.role{height:34px;padding:0 16px;border-radius:999px;background:#eff4ff;border:1px solid #cbd8ff;display:flex;align-items:center;color:#17345c;font-size:13px}.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#14b9d8,#007ec1);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px}.page{max-width:1530px;margin:auto;padding:28px}.btn{height:42px;padding:0 16px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:700;cursor:pointer}.btn.primary{background:#168d79;color:#fff}.btn.dark{background:#122c52;color:#fff}.btn.outline{background:#fff;color:#44546a;border:1px solid var(--line)}.chip{min-height:28px;padding:0 11px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px}.chip.blue{background:#dce8ff;color:#1f56d8}.chip.green{background:#ecfbf3;color:#04984e;border:1px solid #b9efce}.chip.outline{background:#f4f7ff;color:#315de1;border:1px solid #cbd8ff}.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#96a2b4;font-weight:700}
+/* opportunities */
+.tools{display:flex;align-items:center;gap:14px;margin-bottom:14px}.search{width:260px;height:44px;border:1px solid var(--line);background:#fff;border-radius:11px;display:flex;align-items:center;padding:0 14px}.search input{border:0;outline:0;flex:1;font-size:13px}.found{height:44px;padding:0 14px;border:1px solid #c9d8ff;background:#eef3ff;color:#315ed9;border-radius:11px;display:flex;align-items:center;font-size:13px}.tabs{display:flex;gap:28px;height:48px;align-items:flex-end;border-bottom:1px solid var(--line);margin-bottom:24px}.tab{height:48px;display:flex;align-items:center;border-bottom:2px solid transparent;color:#98a3b3;font-size:13px}.tab.active{color:#1f2d42;border-color:#142c52}.linkedin{min-height:72px;border:1px solid #bcd6ff;background:#edf5ff;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:22px}.in{width:34px;height:34px;border-radius:8px;background:#0b7eb6;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}.linkedin-copy b{display:block;font-size:14px}.linkedin-copy span{display:block;margin-top:3px;color:#6f7d90;font-size:12px}.linkedin .btn{margin-left:auto}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.opp-card{padding:22px;min-height:285px;cursor:pointer;transition:.18s ease}.opp-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(16,40,71,.11)}.opp-head{display:flex;gap:12px}.opp-head-main{flex:1}.opp-title{margin:0 0 4px;font-size:18px}.company{font-size:12px;color:#66758a}.meta{margin-top:7px;display:flex;gap:12px;flex-wrap:wrap;color:#6f7d90;font-size:12px}.opp-status{display:flex;flex-direction:column;align-items:flex-end;gap:7px}.deadline{font-size:10px;color:#a1aabb}.deadline b{color:#ff6a00}.tags{display:flex;gap:8px;flex-wrap:wrap;margin:28px 0 14px}.season{font-size:12px;color:#7f8b9d;margin-bottom:10px}.desc{font-size:13px;line-height:1.5;color:#4f5e72;min-height:42px;margin-bottom:16px}.card-actions{border-top:1px solid #edf0f3;padding-top:10px;display:flex;gap:8px}
+/* opportunity detail */
+.detail-wrap{max-width:1210px;margin:auto}.back{background:transparent;color:#6f7c8e;cursor:pointer;display:inline-flex;align-items:center;gap:7px;margin-bottom:20px;font-size:13px}.detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 268px;gap:22px}.detail-main{display:flex;flex-direction:column;gap:18px}.hero{overflow:hidden;min-height:335px;border-radius:18px;background:#0f5c72;color:#fff}.hero-layout{display:grid;grid-template-columns:1.1fr .9fr;min-height:335px}.hero-copy{padding:34px 36px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 20px 20px,rgba(255,255,255,.055) 1px,transparent 1.5px) 0 0/18px 18px,linear-gradient(135deg,#15556f,#0b6f79)}.hero-company{display:flex;align-items:center;gap:12px;font-size:14px}.hero-logo{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-weight:700}.hero-title{font-family:Georgia,serif;font-style:italic;font-size:34px;line-height:1.16}.hero-tags{display:flex;gap:8px}.hero-tags span{padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.32);font-size:12px}.photo{position:relative;background:linear-gradient(135deg,#e6eef2,#91aab5);min-height:335px}.photo:before{content:"";position:absolute;inset:12% 10% 12% 42%;background:rgba(255,255,255,.34);transform:skew(-4deg)}.photo:after{content:"";position:absolute;width:35%;height:56%;left:15%;top:20%;background:rgba(28,55,66,.35);box-shadow:115px 36px 0 rgba(48,78,88,.25)}.accept{position:absolute;right:24px;top:24px;padding:8px 13px;border-radius:999px;background:rgba(31,176,115,.85);font-size:12px;z-index:2}.content{padding:24px 28px}.content p{margin:12px 0 0;font-size:14px;line-height:1.58;color:#536176}.detail-side{display:flex;flex-direction:column;gap:16px}.side-card{padding:18px}.side-card .section-label{margin-bottom:12px}.side-line{font-size:12px;color:#536176;line-height:1.5}.status-list{display:flex;flex-direction:column;gap:10px}.status{font-size:12px;color:#536176}.status:before{content:"✓";display:inline-flex;width:16px;height:16px;border:1.5px solid #16ba81;border-radius:50%;color:#16ba81;align-items:center;justify-content:center;margin-right:8px;font-size:9px}.details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}.tile{background:#f4f6fa;border-radius:12px;padding:14px}.tile small{display:block;color:#97a2b3;text-transform:uppercase;font-size:10px}.tile b{display:block;margin-top:3px;font-size:13px}
+/* profile */
+.profile-wrap{max-width:1280px;margin:auto}.progress-card{padding:18px 20px;margin-bottom:20px}.progress-head{display:flex;justify-content:space-between;font-size:12px;font-weight:700}.track{height:7px;background:#e9eef4;border-radius:999px;overflow:hidden;margin-top:8px}.fill{width:50%;height:100%;background:linear-gradient(90deg,#2485f0,#17b7e0)}.progress-meta{display:flex;gap:16px;flex-wrap:wrap;margin:10px 0 14px;font-size:11px;color:#95a1b3}.progress-meta .done{color:#0c9f62}.profile-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px}.profile-main{overflow:hidden}.profile-tabs{display:flex;gap:30px;height:58px;align-items:flex-end;border-bottom:1px solid var(--line);padding:0 22px}.profile-tab{height:58px;display:flex;align-items:center;color:#95a0b1;border-bottom:2px solid transparent;font-size:13px}.profile-tab.active{color:#17263d;border-color:#172f57}.form{padding:24px}.form-section{margin-bottom:24px}.form-title{font-size:14px;font-weight:700;margin-bottom:16px}.field{margin-bottom:14px}.field label{display:block;font-size:11px;color:#546277;margin-bottom:7px}.field input{width:100%;height:44px;border:1px solid var(--line);border-radius:10px;background:#fbfcfd;padding:0 14px;outline:0}.profile-side{display:flex;flex-direction:column;gap:14px}.picture{padding:18px}.circle{width:112px;height:112px;border-radius:50%;margin:18px auto 6px;background:linear-gradient(135deg,#c9fff1,#d7edff);border:2px dashed #d7dee8;display:flex;align-items:center;justify-content:center;color:#079b8b;font-size:24px;font-weight:800}
+@media(max-width:1100px){.grid{grid-template-columns:1fr}.detail-grid,.profile-layout{grid-template-columns:1fr}.detail-side{display:grid;grid-template-columns:1fr 1fr}}@media(max-width:820px){.login-shell{grid-template-columns:1fr}.app-shell{grid-template-columns:76px 1fr}.sidebar{width:76px;padding:18px 10px}.brand-name,.nav-item span{display:none}.nav-item{justify-content:center;padding:0}.main{grid-column:2}.tools{flex-wrap:wrap}.hero-layout{grid-template-columns:1fr}.photo{min-height:210px}}
+
+/* ===== V2 · AJUSTES DE ESCALA, MARCA E DENSIDADE ===== */
+
+.ramaz-seal{
+  display:none!important;
+}
+
+.ramaz-seal-img{
+  width:170px;
+  height:170px;
+  object-fit:contain;
+  flex:0 0 auto;
+}
+
+.login-brand-content{
+  gap:28px!important;
+  width:min(560px,100%)!important;
+}
+
+.brand-copy .kicker{
+  font-size:15px!important;
+  margin-bottom:6px!important;
+}
+
+.brand-copy h1{
+  font-size:31px!important;
+  line-height:1.05!important;
+  max-width:330px!important;
+}
+
+.brand-copy p{
+  font-size:14px!important;
+  line-height:1.45!important;
+  max-width:390px!important;
+}
+
+.login-card{
+  width:min(400px,100%)!important;
+}
+
+.login-card h2{
+  font-size:30px!important;
+  margin-bottom:20px!important;
+}
+
+.login-primary,
+.login-secondary{
+  height:42px!important;
+  font-size:13px!important;
+}
+
+.login-divider{
+  margin:42px 0 20px!important;
+  font-size:14px!important;
+}
+
+/* Sidebar: mismo gradiente del login, con más contraste */
+.sidebar{
+  background:linear-gradient(155deg,var(--navy) 0%,#174f68 54%,#158f84 100%)!important;
+}
+
+.sidebar-logo{
+  width:40px!important;
+  height:40px!important;
+  background:transparent!important;
+  overflow:hidden;
+}
+
+.sidebar-logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.nav-item{
+  color:rgba(255,255,255,.74)!important;
+}
+
+.nav-item:hover{
+  background:rgba(255,255,255,.09)!important;
+  color:#fff!important;
+}
+
+.nav-item.active{
+  background:rgba(255,255,255,.17)!important;
+  color:#fff!important;
+}
+
+/* Escala general más compacta */
+.app-shell{
+  grid-template-columns:226px minmax(0,1fr)!important;
+}
+
+.sidebar{
+  width:226px!important;
+}
+
+.topbar{
+  height:62px!important;
+  padding:0 34px!important;
+}
+
+.topbar-title{
+  font-size:17px!important;
+}
+
+.role-chip{
+  height:31px!important;
+  font-size:12px!important;
+}
+
+.avatar{
+  width:34px!important;
+  height:34px!important;
+  font-size:11px!important;
+}
+
+.page{
+  max-width:1460px!important;
+  padding:24px 42px 40px!important;
+}
+
+/* Opportunities toolbar */
+.opportunities-tools{
+  gap:11px!important;
+  margin-bottom:10px!important;
+}
+
+.search-box{
+  width:240px!important;
+  height:40px!important;
+}
+
+.found-chip{
+  height:40px!important;
+  font-size:12px!important;
+}
+
+.btn{
+  height:38px!important;
+  padding:0 14px!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+}
+
+.tabbar{
+  height:44px!important;
+  margin-bottom:18px!important;
+}
+
+.tab{
+  height:44px!important;
+  font-size:12px!important;
+}
+
+.linkedin-banner{
+  min-height:62px!important;
+  padding:12px 15px!important;
+  margin-bottom:18px!important;
+}
+
+.linkedin-copy strong{
+  font-size:13px!important;
+}
+
+.linkedin-copy span{
+  font-size:11px!important;
+}
+
+/* Tarjetas más densas y coherentes */
+.opportunity-grid{
+  gap:16px!important;
+}
+
+.opportunity-card{
+  padding:18px 20px 17px!important;
+  min-height:0!important;
+}
+
+.opportunity-title{
+  font-size:16px!important;
+  margin-bottom:3px!important;
+}
+
+.company-line,
+.meta-row,
+.season{
+  font-size:11px!important;
+}
+
+.opportunity-status{
+  gap:5px!important;
+}
+
+.chip{
+  min-height:25px!important;
+  padding:0 9px!important;
+  font-size:11px!important;
+}
+
+.deadline{
+  font-size:9px!important;
+}
+
+.tags{
+  margin:16px 0 10px!important;
+  gap:6px!important;
+}
+
+.season{
+  margin-bottom:8px!important;
+}
+
+.description{
+  font-size:12px!important;
+  line-height:1.42!important;
+  min-height:0!important;
+  margin-bottom:12px!important;
+}
+
+.card-actions{
+  padding-top:10px!important;
+}
+
+.card-actions .btn{
+  height:36px!important;
+}
+
+/* Detail page */
+.detail-wrap{
+  max-width:1120px!important;
+}
+
+.back-link{
+  margin-bottom:16px!important;
+  font-size:12px!important;
+}
+
+.detail-grid{
+  gap:18px!important;
+}
+
+.hero-card,
+.hero-layout{
+  min-height:292px!important;
+}
+
+.hero-copy{
+  padding:28px 30px!important;
+}
+
+.hero-company{
+  font-size:13px!important;
+}
+
+.hero-company-logo{
+  width:40px!important;
+  height:40px!important;
+}
+
+.hero-title{
+  font-size:29px!important;
+}
+
+.hero-tags span{
+  padding:6px 10px!important;
+  font-size:11px!important;
+}
+
+.hero-photo{
+  min-height:292px!important;
+  background-size:cover!important;
+  background-position:center!important;
+}
+
+.hero-photo:before,
+.hero-photo:after{
+  display:none!important;
+}
+
+.accepting{
+  top:18px!important;
+  right:18px!important;
+  font-size:11px!important;
+  padding:7px 11px!important;
+}
+
+.change-image{
+  right:18px!important;
+  bottom:18px!important;
+  font-size:10px!important;
+}
+
+.content-card{
+  padding:20px 24px!important;
+}
+
+.content-card p{
+  font-size:13px!important;
+}
+
+.details-grid{
+  gap:10px!important;
+}
+
+.detail-tile{
+  padding:12px!important;
+}
+
+.side-card{
+  padding:16px!important;
+}
+
+/* Profile más compacto */
+.profile-wrap{
+  max-width:1180px!important;
+}
+
+.profile-progress-card{
+  padding:16px 18px!important;
+  margin-bottom:16px!important;
+}
+
+.profile-layout{
+  gap:16px!important;
+}
+
+.profile-tabs{
+  height:52px!important;
+}
+
+.profile-tab{
+  height:52px!important;
+  font-size:12px!important;
+}
+
+.profile-form{
+  padding:20px!important;
+}
+
+.form-section{
+  margin-bottom:20px!important;
+}
+
+.form-section-title{
+  font-size:13px!important;
+}
+
+.field{
+  margin-bottom:12px!important;
+}
+
+.field label{
+  font-size:10px!important;
+}
+
+.field input{
+  height:40px!important;
+  font-size:12px!important;
+}
+
+.picture-card{
+  padding:16px!important;
+}
+
+.profile-circle{
+  width:100px!important;
+  height:100px!important;
+}
+
+/* Mantener aire lateral en resoluciones intermedias */
+@media(max-width:1100px){
+  .page{
+    padding-left:28px!important;
+    padding-right:28px!important;
+  }
+}
+
+@media(max-width:820px){
+  .app-shell{
+    grid-template-columns:72px minmax(0,1fr)!important;
+  }
+
+  .sidebar{
+    width:72px!important;
+  }
+
+  .page{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+
+  .ramaz-seal-img{
+    width:130px;
+    height:130px;
+  }
+
+  .brand-copy h1{
+    font-size:27px!important;
+  }
+}
+
+
+/* ===== V3 · ONBOARDING ===== */
+.onboarding-layout{min-height:100vh;display:grid;grid-template-columns:226px minmax(0,1fr)}
+.onboarding-main{grid-column:2;min-width:0;min-height:100vh;background:#fff}
+.onboarding-page{max-width:1240px;margin:0 auto;padding:34px 42px 40px}
+.onboarding-header{margin-bottom:28px}
+.onboarding-header h1{margin:0 0 5px;color:#173458;font-size:22px;line-height:1.2}
+.onboarding-header p{margin:0;color:#526176;font-size:13px}
+.onboarding-card{background:#fff;border:1px solid #e2e7ed;border-radius:14px;box-shadow:0 2px 7px rgba(16,40,71,.06);padding:24px 26px}
+.onboarding-card + .onboarding-card{margin-top:16px}
+.onboarding-section-title{margin:0 0 4px;color:#173458;font-size:18px}
+.onboarding-section-subtitle{margin:0 0 16px;color:#526176;font-size:12px}
+.onboarding-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+.onboarding-grid-1{display:grid;grid-template-columns:1fr;gap:14px}
+.onboarding-field label{display:block;margin-bottom:6px;color:#26364a;font-size:11px}
+.onboarding-input,.onboarding-select,.onboarding-textarea{width:100%;border:1px solid #dfe5eb;background:#fbfcfd;border-radius:7px;color:#26364a;outline:none;font-size:12px}
+.onboarding-input,.onboarding-select{height:38px;padding:0 11px}
+.onboarding-textarea{min-height:68px;padding:10px 11px;resize:vertical}
+.onboarding-input:focus,.onboarding-select:focus,.onboarding-textarea:focus{border-color:#86a9dd;box-shadow:0 0 0 3px rgba(23,52,88,.06)}
+.onboarding-step-meta{margin-bottom:12px;color:#526176;font-size:12px;font-weight:600}
+.onboarding-step-title{margin:0 0 24px;color:#173458;font-size:18px}
+.onboarding-actions{margin-top:16px;min-height:72px;padding:16px 18px;border-radius:12px;background:#fff;border:1px solid #e6ebf0;box-shadow:0 3px 10px rgba(16,40,71,.07);display:flex;align-items:center;gap:10px}
+.onboarding-actions .btn:last-child{margin-left:auto}
+.onboarding-progress{display:flex;align-items:center;gap:8px;margin:18px 0 24px}
+.onboarding-progress-step{height:6px;flex:1;border-radius:999px;background:#e8edf3}
+.onboarding-progress-step.active,.onboarding-progress-step.done{background:linear-gradient(90deg,#173458,#168f83)}
+.onboarding-success{min-height:100vh;background:#f5f7fa;display:flex;align-items:flex-start;justify-content:center;padding:54px 24px}
+.onboarding-success-wrap{width:min(580px,100%);text-align:center}
+.success-icon{width:38px;height:38px;margin:0 auto 12px;border-radius:50%;background:#173458;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+.onboarding-success h2{margin:0;color:#173458;font-size:21px}
+.onboarding-success p{margin:6px 0 26px;color:#536176;font-size:13px}
+.success-card{text-align:left;background:#fff;border:1px solid #e3e8ee;border-radius:14px;box-shadow:0 2px 8px rgba(16,40,71,.07);padding:24px}
+.success-status{padding:8px 10px;border-radius:999px;background:#fff8ed;color:#d89334;font-size:11px;margin-bottom:12px}
+.success-card h3{margin:0 0 8px;color:#173458;font-size:18px}
+.success-card p{margin:0 0 14px;color:#2d3748;font-size:12px;line-height:1.5;text-align:left}
+.success-card .btn{width:100%}
+.upload-field{position:relative}
+.upload-field:before{content:"⇧";position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#9ca7b5;z-index:1}
+.upload-field .onboarding-input{padding-left:34px}
+@media(max-width:820px){
+  .onboarding-layout{grid-template-columns:72px minmax(0,1fr)}
+  .onboarding-main{grid-column:2}
+  .onboarding-page{padding:26px 18px 34px}
+  .onboarding-grid-2{grid-template-columns:1fr}
+}
+
+
+/* ===== V4 · COMPACT SCALE + ONBOARDING ORIENTATION ===== */
+
+/* Brand assets */
+.ramaz-seal-img{
+  width:142px!important;
+  height:142px!important;
+  object-fit:contain!important;
+}
+.sidebar-logo{
+  width:34px!important;
+  height:34px!important;
+}
+.sidebar-logo img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+}
+
+/* Login: smaller, tighter hierarchy */
+.login-brand{
+  padding:38px!important;
+}
+.login-brand-content{
+  width:min(520px,100%)!important;
+  gap:24px!important;
+}
+.brand-copy .kicker{
+  font-size:14px!important;
+  margin-bottom:5px!important;
+}
+.brand-copy h1{
+  max-width:310px!important;
+  font-size:27px!important;
+  line-height:1.07!important;
+}
+.brand-copy p{
+  max-width:360px!important;
+  margin-top:9px!important;
+  font-size:13px!important;
+  line-height:1.42!important;
+}
+.login-panel{
+  padding:42px!important;
+}
+.login-card{
+  width:min(380px,100%)!important;
+}
+.login-card h2{
+  font-size:27px!important;
+  margin-bottom:18px!important;
+}
+.login-divider{
+  margin:34px 0 18px!important;
+  font-size:13px!important;
+}
+
+/* App density */
+.app-shell{
+  grid-template-columns:210px minmax(0,1fr)!important;
+}
+.sidebar{
+  width:210px!important;
+  padding:16px 14px!important;
+}
+.sidebar-brand{
+  gap:10px!important;
+  padding:8px 6px 24px!important;
+}
+.sidebar-name{
+  font-size:14px!important;
+}
+.nav-item{
+  height:42px!important;
+  padding:0 12px!important;
+  gap:11px!important;
+  font-size:13px!important;
+}
+.nav-item svg{
+  width:16px!important;
+  height:16px!important;
+}
+.topbar{
+  height:58px!important;
+  padding:0 28px!important;
+}
+.topbar-title{
+  font-size:16px!important;
+}
+.page{
+  max-width:1360px!important;
+  padding:22px 34px 34px!important;
+}
+
+/* Opportunities: compact cards, no dead space */
+.opportunities-tools{
+  margin-bottom:8px!important;
+}
+.search-box{
+  width:224px!important;
+  height:38px!important;
+}
+.found-chip{
+  height:38px!important;
+}
+.linkedin-banner{
+  min-height:56px!important;
+  padding:10px 13px!important;
+}
+.linkedin-icon{
+  width:30px!important;
+  height:30px!important;
+}
+.opportunity-grid{
+  gap:14px!important;
+}
+.opportunity-card{
+  min-height:0!important;
+  padding:16px 18px!important;
+}
+.opportunity-head{
+  gap:10px!important;
+}
+.opportunity-title{
+  font-size:15px!important;
+}
+.opportunity-status{
+  gap:4px!important;
+}
+.tags{
+  margin:12px 0 8px!important;
+}
+.description{
+  margin-bottom:10px!important;
+  font-size:11.5px!important;
+  line-height:1.4!important;
+}
+.card-actions{
+  padding-top:8px!important;
+}
+.card-actions .btn{
+  height:34px!important;
+  padding:0 12px!important;
+}
+.chip{
+  min-height:23px!important;
+  padding:0 8px!important;
+  font-size:10.5px!important;
+}
+.company-line,
+.meta-row,
+.season{
+  font-size:10.5px!important;
+}
+.deadline{
+  font-size:9px!important;
+}
+
+/* Detail */
+.detail-wrap{
+  max-width:1080px!important;
+}
+.hero-card,
+.hero-layout{
+  min-height:270px!important;
+}
+.hero-copy{
+  padding:24px 26px!important;
+}
+.hero-title{
+  font-size:26px!important;
+}
+.hero-photo{
+  min-height:270px!important;
+  background-size:cover!important;
+  background-position:center!important;
+}
+.content-card{
+  padding:18px 22px!important;
+}
+.side-card{
+  padding:14px!important;
+}
+
+/* Profile */
+.profile-wrap{
+  max-width:1120px!important;
+}
+.profile-progress-card{
+  padding:14px 16px!important;
+}
+.profile-tabs{
+  height:48px!important;
+}
+.profile-tab{
+  height:48px!important;
+}
+.profile-form{
+  padding:18px!important;
+}
+
+/* Onboarding: clear state, sticky controls */
+.onboarding-layout{
+  grid-template-columns:210px minmax(0,1fr)!important;
+}
+.onboarding-main{
+  grid-column:2!important;
+  background:#f7f9fb!important;
+}
+.onboarding-page{
+  max-width:1120px!important;
+  padding:24px 34px 38px!important;
+}
+.onboarding-header{
+  margin-bottom:12px!important;
+}
+.onboarding-header h1{
+  font-size:19px!important;
+}
+.onboarding-header p{
+  font-size:12px!important;
+}
+.onboarding-stepper{
+  position:sticky;
+  top:0;
+  z-index:25;
+  margin:0 -6px 18px;
+  padding:8px 6px 10px;
+  background:rgba(247,249,251,.96);
+  backdrop-filter:blur(8px);
+}
+.onboarding-stepper-main{
+  min-height:62px;
+  padding:10px 12px;
+  background:#fff;
+  border:1px solid #dfe6ed;
+  border-radius:12px;
+  box-shadow:0 3px 10px rgba(16,40,71,.06);
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr) auto;
+  align-items:center;
+  gap:18px;
+}
+.onboarding-step-status{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.onboarding-step-status span{
+  color:#7d8a9c;
+  font-size:10px;
+  font-weight:600;
+}
+.onboarding-step-status strong{
+  color:#173458;
+  font-size:12px;
+}
+.onboarding-step-track{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+.onboarding-step-node{
+  width:70px;
+  padding:0;
+  background:transparent;
+  color:#8b98aa;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  flex:0 0 auto;
+}
+.onboarding-step-node span{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  border:1px solid #cfd9e3;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:10px;
+  font-weight:700;
+}
+.onboarding-step-node small{
+  font-size:9px;
+  white-space:nowrap;
+}
+.onboarding-step-node.active{
+  color:#173458;
+}
+.onboarding-step-node.active span{
+  background:#173458;
+  border-color:#173458;
+  color:#fff;
+}
+.onboarding-step-node.done span{
+  background:#168f83;
+  border-color:#168f83;
+  color:#fff;
+}
+.onboarding-step-node.done{
+  color:#168f83;
+}
+.onboarding-step-line{
+  height:2px;
+  flex:1;
+  min-width:14px;
+  background:#e3e9ef;
+}
+.onboarding-step-line.done{
+  background:#168f83;
+}
+.onboarding-step-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.onboarding-step-actions .btn{
+  height:34px!important;
+}
+.onboarding-card{
+  padding:20px 22px!important;
+  border-radius:12px!important;
+}
+.onboarding-section-title{
+  font-size:16px!important;
+}
+.onboarding-section-subtitle{
+  margin-bottom:13px!important;
+  font-size:11px!important;
+}
+.onboarding-step-title{
+  margin-bottom:18px!important;
+  font-size:16px!important;
+}
+.onboarding-grid-1{
+  gap:11px!important;
+}
+.onboarding-grid-2{
+  gap:11px 14px!important;
+}
+.onboarding-field label{
+  margin-bottom:5px!important;
+  font-size:10.5px!important;
+}
+.onboarding-input,
+.onboarding-select{
+  height:36px!important;
+  font-size:11.5px!important;
+}
+.onboarding-textarea{
+  min-height:62px!important;
+  font-size:11.5px!important;
+}
+/* old bottom action bar no longer used */
+.onboarding-actions{
+  display:none!important;
+}
+
+@media(max-width:950px){
+  .onboarding-stepper-main{
+    grid-template-columns:120px minmax(0,1fr);
+  }
+  .onboarding-step-actions{
+    grid-column:1/-1;
+    justify-content:flex-end;
+  }
+}
+@media(max-width:820px){
+  .app-shell,
+  .onboarding-layout{
+    grid-template-columns:68px minmax(0,1fr)!important;
+  }
+  .sidebar{
+    width:68px!important;
+  }
+  .page,
+  .onboarding-page{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .onboarding-step-status{
+    display:none;
+  }
+  .onboarding-stepper-main{
+    grid-template-columns:1fr!important;
+  }
+  .onboarding-step-node{
+    width:56px;
+  }
+  .onboarding-step-node small{
+    display:none;
+  }
+}
+
+
+/* ===== V5 · ASSETS REALES ===== */
+.brand-logo{background:transparent!important;overflow:hidden}
+.brand-logo img{width:100%;height:100%;object-fit:contain;display:block}
+.photo{background-image:url('imgs/oportunidad.png');background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
+.photo:before,.photo:after{display:none!important}
+
+
+/* ===== V5 · ONBOARDING STEPPER + STICKY BOTTOM ACTIONS + FILE UPLOAD ===== */
+.onboarding-stepper{
+  position:relative!important;
+  top:auto!important;
+  z-index:10!important;
+  margin:0 0 18px!important;
+  padding:0!important;
+  background:transparent!important;
+  backdrop-filter:none!important;
+}
+.onboarding-stepper-main{
+  min-height:auto!important;
+  padding:16px 18px 14px!important;
+  background:#fff!important;
+  border:1px solid #dfe6ed!important;
+  border-radius:12px!important;
+  box-shadow:0 2px 8px rgba(16,40,71,.05)!important;
+  display:block!important;
+}
+.onboarding-step-status{display:none!important}
+.onboarding-step-track{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:start!important;
+  gap:0!important;
+  position:relative!important;
+  padding:0 4px!important;
+}
+.onboarding-step-track:before{
+  content:"";
+  position:absolute;
+  left:9%;
+  right:9%;
+  top:12px;
+  height:4px;
+  border-radius:999px;
+  background:#e5ebf1;
+  z-index:0;
+}
+.onboarding-step-track:after{
+  content:"";
+  position:absolute;
+  left:9%;
+  top:12px;
+  height:4px;
+  width:var(--onboarding-progress,0%);
+  max-width:82%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#173458 0%,#17627a 48%,#168f83 100%);
+  z-index:1;
+  transition:width .25s ease;
+}
+.onboarding-step-node{
+  width:auto!important;
+  position:relative!important;
+  z-index:2!important;
+  color:#8b98aa!important;
+  gap:5px!important;
+}
+.onboarding-step-node span{
+  width:26px!important;
+  height:26px!important;
+  border:2px solid #d7e0e8!important;
+  background:#fff!important;
+  box-shadow:0 0 0 4px #fff!important;
+  font-size:10px!important;
+}
+.onboarding-step-node small{
+  font-size:10px!important;
+  color:#7f8b9d!important;
+}
+.onboarding-step-node.active span{
+  background:#173458!important;
+  border-color:#173458!important;
+  color:#fff!important;
+}
+.onboarding-step-node.active small{
+  color:#173458!important;
+  font-weight:700!important;
+}
+.onboarding-step-node.done span{
+  background:#168f83!important;
+  border-color:#168f83!important;
+  color:#fff!important;
+}
+.onboarding-step-node.done small{color:#168f83!important}
+.onboarding-step-line{display:none!important}
+
+.onboarding-step-actions{
+  position:fixed!important;
+  left:210px!important;
+  right:0!important;
+  bottom:0!important;
+  z-index:40!important;
+  height:70px!important;
+  padding:12px 34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  background:rgba(255,255,255,.97)!important;
+  border-top:1px solid #dfe6ed!important;
+  box-shadow:0 -8px 18px rgba(16,40,71,.06)!important;
+  backdrop-filter:blur(10px)!important;
+}
+.onboarding-step-actions .btn{
+  min-width:92px!important;
+  height:38px!important;
+}
+#onboardingBackBtn{margin-right:auto!important}
+#onboardingNextBtn{margin-left:auto!important}
+.onboarding-page{padding-bottom:104px!important}
+
+.upload-field{position:relative!important}
+.upload-field:before{display:none!important}
+.upload-field .onboarding-input[type="file"]{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+.upload-drop{
+  min-height:92px;
+  border:1px dashed #bfcbd7;
+  background:#f8fafc;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:16px;
+  cursor:pointer;
+  transition:.15s ease;
+}
+.upload-drop:hover{
+  border-color:#7ea4cb;
+  background:#f3f7fb;
+}
+.upload-drop-icon{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  background:#eaf1f7;
+  color:#173458;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+.upload-drop-copy{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.upload-drop-copy strong{
+  color:#26364a;
+  font-size:11.5px;
+}
+.upload-drop-copy span{
+  color:#7f8b9d;
+  font-size:10.5px;
+}
+.upload-file-name{
+  margin-top:7px;
+  color:#168f83;
+  font-size:10.5px;
+  font-weight:600;
+}
+
+@media(max-width:820px){
+  .onboarding-step-actions{
+    left:68px!important;
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  .onboarding-step-node small{
+    display:block!important;
+    font-size:9px!important;
+  }
+}
+
+
+/* ===== V6 · STEPPER DENTRO DEL FOOTER STICKY ===== */
+
+/* no top stepper */
+.onboarding-stepper,
+.onboarding-stepper-main,
+.onboarding-step-track{
+  display:none!important;
+}
+
+/* footer is the navigation + progress area */
+.onboarding-step-actions{
+  left:210px!important;
+  right:0!important;
+  bottom:0!important;
+  height:86px!important;
+  padding:10px 34px 9px!important;
+  display:grid!important;
+  grid-template-columns:110px minmax(360px,720px) 110px!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  background:rgba(255,255,255,.98)!important;
+  border-top:1px solid #dfe6ed!important;
+  box-shadow:0 -8px 20px rgba(16,40,71,.07)!important;
+  backdrop-filter:blur(10px)!important;
+}
+
+#onboardingBackBtn{
+  justify-self:start!important;
+  margin:0!important;
+}
+
+#onboardingNextBtn{
+  justify-self:end!important;
+  margin:0!important;
+}
+
+.footer-stepper{
+  width:100%;
+  align-self:center;
+}
+
+.footer-step-line{
+  position:relative;
+  height:8px;
+  border-radius:999px;
+  background:#e4eaf0;
+  overflow:hidden;
+  box-shadow:inset 0 1px 2px rgba(23,52,88,.06);
+}
+
+.footer-step-fill{
+  height:100%;
+  width:0%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#173458 0%,#17657a 50%,#168f83 100%);
+  transition:width .28s ease;
+}
+
+.footer-step-labels{
+  margin-top:7px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+}
+
+.footer-step-label{
+  background:transparent;
+  border:0;
+  padding:0;
+  color:#8a97a8;
+  font-size:10px;
+  font-weight:500;
+  text-align:center;
+  cursor:pointer;
+  transition:.15s ease;
+}
+
+.footer-step-label:hover{
+  color:#173458;
+}
+
+.footer-step-label.active{
+  color:#173458;
+  font-weight:700;
+}
+
+.footer-step-label.done{
+  color:#168f83;
+  font-weight:650;
+}
+
+/* allow page content to clear taller footer */
+.onboarding-page{
+  padding-bottom:118px!important;
+}
+
+@media(max-width:980px){
+  .onboarding-step-actions{
+    grid-template-columns:92px minmax(260px,1fr) 92px!important;
+    gap:14px!important;
+    padding-left:20px!important;
+    padding-right:20px!important;
+  }
+}
+
+@media(max-width:820px){
+  .onboarding-step-actions{
+    left:68px!important;
+    height:92px!important;
+    grid-template-columns:72px minmax(180px,1fr) 72px!important;
+    gap:10px!important;
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+
+  .footer-step-label{
+    font-size:8.5px!important;
+  }
+
+  .footer-step-line{
+    height:7px!important;
+  }
+}
+
+
+/* ===== V7 · ONBOARDING SECTIONS AS ENTITY BLOCKS ===== */
+.onboarding-step{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.onboarding-entity{
+  background:#fff;
+  border:1px solid #d8e0e8;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(16,40,71,.05);
+}
+
+.onboarding-entity-header{
+  min-height:64px;
+  padding:16px 22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:3px;
+  background:#f5f7fa;
+  border-bottom:1px solid #d8e0e8;
+}
+
+.onboarding-entity-header h2{
+  margin:0;
+  color:#334155;
+  font-size:17px;
+  line-height:1.25;
+  font-weight:700;
+}
+
+.onboarding-entity-header p{
+  margin:0;
+  color:#6f7d90;
+  font-size:11px;
+  line-height:1.4;
+}
+
+.onboarding-entity-body{
+  padding:22px;
+  background:#fff;
+}
+
+.onboarding-entity + .onboarding-entity{
+  margin-top:0;
+}
+
+.onboarding-entity .onboarding-grid-1,
+.onboarding-entity .onboarding-grid-2{
+  gap:14px 16px!important;
+}
+
+.onboarding-entity .onboarding-field label{
+  margin-bottom:6px!important;
+  color:#536176!important;
+  font-size:10.5px!important;
+  font-weight:600;
+  text-transform:none;
+}
+
+.onboarding-entity .onboarding-input,
+.onboarding-entity .onboarding-select,
+.onboarding-entity .onboarding-textarea{
+  background:#f7f9fb!important;
+  border:1px solid #d7dfe8!important;
+  border-radius:10px!important;
+}
+
+.onboarding-entity .onboarding-input,
+.onboarding-entity .onboarding-select{
+  height:42px!important;
+  padding:0 13px!important;
+}
+
+.onboarding-entity .onboarding-textarea{
+  min-height:82px!important;
+  padding:11px 13px!important;
+}
+
+.onboarding-entity .upload-drop{
+  min-height:116px;
+  border-radius:12px;
+  background:#f8fafc;
+}
+
+@media(max-width:820px){
+  .onboarding-entity-header{
+    min-height:58px;
+    padding:14px 16px;
+  }
+
+  .onboarding-entity-body{
+    padding:16px;
+  }
+}
+
+
+/* ===== V8 · ONBOARDING FLOW + SUCCESS ===== */
+#onboardingScreen .onboarding-step{
+  gap:24px!important;
+}
+
+#onboardingScreen .onboarding-entity + .onboarding-entity{
+  margin-top:4px!important;
+}
+
+/* Final state */
+.onboarding-success{
+  min-height:100vh!important;
+  padding:72px 24px!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(22,143,131,.08),transparent 34%),
+    #f5f7fa!important;
+}
+
+.onboarding-success-wrap{
+  width:min(640px,100%)!important;
+}
+
+.success-icon{
+  width:52px!important;
+  height:52px!important;
+  margin:0 auto 16px!important;
+  background:#e8f7f3!important;
+  color:#168f83!important;
+  border:1px solid #c8e9e2!important;
+  font-size:24px!important;
+  font-weight:800!important;
+}
+
+.onboarding-success h2{
+  font-size:25px!important;
+  line-height:1.2!important;
+  margin-bottom:8px!important;
+}
+
+.onboarding-success-wrap > p{
+  max-width:500px;
+  margin:0 auto 28px!important;
+  color:#6b788a!important;
+  line-height:1.5!important;
+}
+
+.success-card{
+  padding:0!important;
+  overflow:hidden!important;
+  border-radius:16px!important;
+  border:1px solid #dce4eb!important;
+  box-shadow:0 10px 30px rgba(16,40,71,.08)!important;
+}
+
+.success-card-header{
+  padding:17px 20px;
+  background:#f5f7fa;
+  border-bottom:1px solid #dce4eb;
+}
+
+.success-card-body{
+  padding:22px 20px 20px;
+}
+
+.success-status{
+  display:inline-flex!important;
+  align-items:center;
+  gap:7px;
+  margin:0!important;
+  padding:7px 10px!important;
+  background:#fff7e8!important;
+  border:1px solid #f1d7a4!important;
+  color:#b97714!important;
+  font-weight:700;
+}
+
+.success-status:before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:currentColor;
+}
+
+.success-card h3{
+  margin:0 0 10px!important;
+  font-size:17px!important;
+}
+
+.success-card p{
+  margin:0 0 18px!important;
+  color:#5a687b!important;
+  line-height:1.6!important;
+}
+
+.success-card .btn{
+  width:100%;
+  height:42px!important;
+}
+
+
+/* ===== V9 · PARAMETRIC ONBOARDING ADMIN + RESPONSES ===== */
+.admin-page{max-width:1240px;margin:0 auto;padding:24px 34px 42px}
+.admin-heading{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.admin-heading-copy{flex:1}
+.admin-heading h1{margin:0 0 5px;color:#173458;font-size:22px;line-height:1.2}
+.admin-heading p{margin:0;color:#6b788a;font-size:12px;line-height:1.5}
+.admin-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.admin-search{width:280px;height:38px;border:1px solid #dce3ea;border-radius:9px;background:#fff;padding:0 12px;font-size:12px;outline:none}
+.admin-search:focus{border-color:#8da7c4;box-shadow:0 0 0 3px rgba(23,52,88,.05)}
+.setup-category{background:#fff;border:1px solid #dce4eb;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(16,40,71,.05);margin-bottom:18px}
+.setup-category-header{min-height:62px;padding:15px 20px;background:#f5f7fa;border-bottom:1px solid #dce4eb;display:flex;align-items:center;gap:12px}
+.setup-category-header-copy{flex:1}
+.setup-category-header h2{margin:0 0 3px;color:#334155;font-size:16px}
+.setup-category-header p{margin:0;color:#7a8798;font-size:10.5px}
+.setup-count{padding:5px 9px;border-radius:999px;background:#eaf0f7;color:#536176;font-size:10px;font-weight:700}
+.question-row{display:grid;grid-template-columns:42px minmax(280px,1fr) 135px 110px 150px;align-items:center;gap:12px;min-height:72px;padding:12px 18px;border-bottom:1px solid #edf1f4}
+.question-row:last-child{border-bottom:0}
+.question-order{width:28px;height:28px;border-radius:8px;background:#eef3f7;color:#536176;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.question-main strong{display:block;color:#26364a;font-size:12px;margin-bottom:4px}
+.question-main small{color:#8b97a8;font-size:10px}
+.type-chip,.meta-chip{display:inline-flex;align-items:center;min-height:25px;padding:0 9px;border-radius:999px;font-size:10px;font-weight:650}
+.type-chip{background:#eef4ff;color:#315fd3;border:1px solid #cfdbfb}
+.meta-chip{background:#f4f7f9;color:#617083;border:1px solid #e0e6ec}
+.meta-chip.required{background:#fff6e8;color:#b77315;border-color:#f2d7aa}
+.meta-chip.active{background:#edf9f4;color:#168f68;border-color:#ccecdf}
+.row-actions{display:flex;justify-content:flex-end;gap:6px}
+.icon-btn{width:32px;height:32px;border-radius:8px;background:#fff;border:1px solid #dce4eb;color:#536176;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.icon-btn:hover{background:#f5f7fa;color:#173458}
+.editor-wrap{max-width:1080px;margin:0 auto;padding:24px 34px 44px}
+.editor-back{margin-bottom:16px}
+.entity-panel{background:#fff;border:1px solid #dce4eb;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(16,40,71,.05);margin-bottom:18px}
+.entity-panel-header{min-height:64px;padding:15px 20px;background:#f5f7fa;border-bottom:1px solid #dce4eb;display:flex;align-items:center;gap:12px}
+.entity-panel-header-copy{flex:1}
+.entity-panel-header h2{margin:0 0 3px;color:#334155;font-size:16px}
+.entity-panel-header p{margin:0;color:#7a8798;font-size:10.5px}
+.entity-panel-body{padding:20px}
+.admin-grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+.admin-grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 16px}
+.admin-field label{display:block;margin-bottom:6px;color:#536176;font-size:10.5px;font-weight:600}
+.admin-input,.admin-select,.admin-textarea{width:100%;border:1px solid #d7dfe8;background:#f8fafc;border-radius:10px;color:#26364a;outline:none;font-size:12px}
+.admin-input,.admin-select{height:40px;padding:0 12px}
+.admin-textarea{min-height:78px;padding:10px 12px;resize:vertical}
+.switch-line{height:40px;display:flex;align-items:center;gap:9px;color:#536176;font-size:11px}
+.fake-switch{width:38px;height:22px;border-radius:999px;background:#168f83;position:relative;flex:0 0 auto}
+.fake-switch:after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;right:3px;top:3px;box-shadow:0 1px 2px rgba(0,0,0,.18)}
+.option-list{display:flex;flex-direction:column;gap:8px}
+.option-row{display:grid;grid-template-columns:38px minmax(0,1fr) 90px 34px;gap:9px;align-items:center}
+.drag-handle{color:#a2adba;text-align:center;font-size:16px}
+.inline-add{margin-top:12px}
+.condition-row{display:grid;grid-template-columns:minmax(0,1.4fr) 120px minmax(0,1fr) 34px;gap:10px;align-items:end}
+.editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+
+/* Parametric user questions */
+.param-question{margin-bottom:18px}
+.param-question:last-child{margin-bottom:0}
+.param-question-title{display:flex;align-items:center;gap:7px;margin-bottom:7px;color:#2d3c50;font-size:11px;font-weight:700}
+.req-dot{color:#d37a24}
+.param-question-help{margin:-2px 0 8px;color:#8a97a8;font-size:10px}
+.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.choice-option{min-height:42px;padding:0 12px;border:1px solid #d7e0e8;border-radius:10px;background:#f8fafc;color:#526176;display:flex;align-items:center;gap:9px;font-size:11.5px;cursor:pointer}
+.choice-option input{accent-color:#168f83}
+.choice-option:has(input:checked){border-color:#8ac9bd;background:#f0faf7;color:#176f64}
+.param-conditional{margin-top:16px;padding-top:16px;border-top:1px dashed #dce4eb}
+
+/* Responses */
+.response-table{background:#fff;border:1px solid #dce4eb;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(16,40,71,.05)}
+.response-head,.response-row{display:grid;grid-template-columns:minmax(220px,1.4fr) 130px 130px 150px 120px;gap:12px;align-items:center;padding:0 18px}
+.response-head{height:44px;background:#f5f7fa;border-bottom:1px solid #dce4eb;color:#617083;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.response-row{min-height:66px;border-bottom:1px solid #edf1f4;font-size:11.5px;color:#536176}
+.response-row:last-child{border-bottom:0}
+.response-user{display:flex;align-items:center;gap:10px}
+.response-avatar{width:34px;height:34px;border-radius:50%;background:#e8f1f7;color:#173458;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.progress-mini{display:flex;align-items:center;gap:8px}
+.progress-mini-bar{width:70px;height:6px;border-radius:999px;background:#e8edf2;overflow:hidden}
+.progress-mini-fill{height:100%;background:#168f83;border-radius:999px}
+.response-detail-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.response-detail-head .response-avatar{width:46px;height:46px;font-size:12px}
+.answer-pair{display:grid;grid-template-columns:minmax(260px,.9fr) minmax(0,1.4fr);gap:20px;padding:13px 0;border-bottom:1px solid #edf1f4}
+.answer-pair:last-child{border-bottom:0}
+.answer-question{color:#657386;font-size:11px}
+.answer-value{color:#26364a;font-size:11.5px;font-weight:600}
+.answer-empty{color:#a0aab6;font-style:italic;font-weight:400}
+
+@media(max-width:1000px){
+  .question-row{grid-template-columns:36px minmax(220px,1fr) 120px 100px}
+  .row-actions{grid-column:2/-1;justify-content:flex-start}
+  .response-head,.response-row{grid-template-columns:minmax(190px,1.3fr) 110px 120px 100px}
+  .response-head > :nth-child(4),.response-row > :nth-child(4){display:none}
+}
+@media(max-width:820px){
+  .admin-page,.editor-wrap{padding-left:18px;padding-right:18px}
+  .admin-grid-2,.admin-grid-3,.choice-grid{grid-template-columns:1fr}
+  .condition-row{grid-template-columns:1fr}
+  .question-row{grid-template-columns:34px 1fr}
+  .question-row > :nth-child(n+3):not(.row-actions){grid-column:2}
+  .response-head{display:none}
+  .response-row{grid-template-columns:1fr;padding:14px 16px;gap:8px}
+  .response-row > *{display:flex!important}
+  .answer-pair{grid-template-columns:1fr;gap:5px}
+}
+
+
+/* ===== V10 · UNIFIED ADMIN ONBOARDING ===== */
+.admin-onboarding-tabs{
+  display:inline-flex;
+  gap:4px;
+  padding:4px;
+  margin-bottom:20px;
+  background:#edf2f6;
+  border:1px solid #dce4eb;
+  border-radius:11px;
+}
+.admin-onboarding-tab{
+  height:34px;
+  padding:0 15px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#657386;
+  font-size:11px;
+  font-weight:650;
+  cursor:pointer;
+}
+.admin-onboarding-tab.active{
+  background:#fff;
+  color:#173458;
+  box-shadow:0 1px 4px rgba(16,40,71,.10);
+}
+.admin-onboarding-panel{display:none}
+.admin-onboarding-panel.active{display:block}
+
+
+/* ===== V11 · ADMIN ONBOARDING INFORMATION HIERARCHY ===== */
+#onboardingSetupScreen .admin-page{
+  padding-top:30px;
+}
+
+#onboardingSetupScreen .admin-page > .admin-heading{
+  margin-bottom:18px;
+  padding-bottom:0;
+}
+
+#onboardingSetupScreen .admin-page > .admin-heading h1{
+  font-size:26px;
+  color:#173458;
+  letter-spacing:-.02em;
+}
+
+#onboardingSetupScreen .admin-page > .admin-heading p{
+  max-width:680px;
+  font-size:12px;
+}
+
+#onboardingSetupScreen .admin-onboarding-tabs{
+  display:flex;
+  width:100%;
+  gap:0;
+  padding:0;
+  margin:0 0 28px;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid #dce4eb;
+  border-radius:0;
+}
+
+#onboardingSetupScreen .admin-onboarding-tab{
+  position:relative;
+  height:44px;
+  padding:0 18px;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  color:#748194;
+  font-size:12px;
+  font-weight:650;
+}
+
+#onboardingSetupScreen .admin-onboarding-tab.active{
+  background:transparent;
+  color:#173458;
+  box-shadow:none;
+}
+
+#onboardingSetupScreen .admin-onboarding-tab.active:after{
+  content:"";
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:-1px;
+  height:3px;
+  border-radius:3px 3px 0 0;
+  background:#168f83;
+}
+
+#onboardingSetupScreen .admin-onboarding-panel > .admin-heading{
+  margin-bottom:18px;
+}
+
+#onboardingSetupScreen .admin-onboarding-panel > .admin-heading h1{
+  margin-bottom:4px;
+  font-size:18px;
+  color:#334155;
+  letter-spacing:0;
+}
+
+#onboardingSetupScreen .admin-onboarding-panel > .admin-heading p{
+  font-size:11px;
+  color:#7a8798;
+}
+
+#onboardingSetupScreen .admin-onboarding-panel > .admin-heading .btn{
+  align-self:center;
+}
+
+#onboardingSetupScreen .admin-onboarding-panel{
+  padding-top:0;
+}
+
+#onboardingSetupScreen .admin-toolbar{
+  padding:12px 14px;
+  margin-bottom:18px;
+  background:#f7f9fb;
+  border:1px solid #e2e8ee;
+  border-radius:11px;
+}
+
+
+/* ===== V12 · ADMIN ONBOARDING: CLEAR SECTIONS + NATIVE TABS + INLINE ANSWERS ===== */
+
+/* Native app segmented tabs */
+.app-tabs{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  background:#f2f4f6;
+  border-radius:14px;
+  margin-bottom:22px;
+}
+.app-tab{
+  min-width:150px;
+  height:42px;
+  padding:0 18px;
+  border:0;
+  border-radius:11px;
+  background:transparent;
+  color:#9aa3ad;
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+}
+.app-tab.active{
+  background:#fff;
+  color:#173458;
+  font-weight:700;
+  box-shadow:0 1px 4px rgba(16,40,71,.08);
+}
+
+/* Two clear admin areas */
+.onboarding-area-selector{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin:0 0 18px;
+}
+.onboarding-area-card{
+  min-height:112px;
+  padding:18px 20px;
+  background:#fff;
+  border:1px solid #dfe6ed;
+  border-radius:16px;
+  box-shadow:0 2px 8px rgba(16,40,71,.04);
+  cursor:pointer;
+  transition:.15s ease;
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  text-align:left;
+}
+.onboarding-area-card:hover{
+  border-color:#b9c9d9;
+  box-shadow:0 5px 14px rgba(16,40,71,.07);
+}
+.onboarding-area-card.active{
+  border-color:#89b9b1;
+  box-shadow:0 0 0 2px rgba(22,143,131,.08),0 5px 14px rgba(16,40,71,.06);
+}
+.onboarding-area-icon{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:#edf3f7;
+  color:#173458;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  flex:0 0 auto;
+}
+.onboarding-area-card.active .onboarding-area-icon{
+  background:#e8f6f3;
+  color:#168f83;
+}
+.onboarding-area-copy{flex:1}
+.onboarding-area-copy strong{
+  display:block;
+  color:#26364a;
+  font-size:14px;
+  margin-bottom:5px;
+}
+.onboarding-area-copy span{
+  display:block;
+  color:#7c899a;
+  font-size:10.5px;
+  line-height:1.45;
+}
+.onboarding-area-meta{
+  margin-top:10px;
+  color:#607084;
+  font-size:10px;
+  font-weight:700;
+}
+
+/* Category accordion */
+.setup-category{
+  margin-bottom:14px!important;
+}
+.setup-category-header{
+  cursor:pointer;
+  user-select:none;
+}
+.setup-category-chevron{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  border:1px solid #dce4eb;
+  background:#fff;
+  color:#617083;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  transition:.15s ease;
+}
+.setup-category.collapsed .setup-category-chevron{
+  transform:rotate(-90deg);
+}
+.setup-category-body{display:block}
+.setup-category.collapsed .setup-category-body{display:none}
+
+/* Question accordion */
+.question-item{
+  border-bottom:1px solid #edf1f4;
+}
+.question-item:last-child{border-bottom:0}
+.question-summary{
+  display:grid;
+  grid-template-columns:42px minmax(280px,1fr) 135px 105px 90px 108px;
+  gap:12px;
+  align-items:center;
+  min-height:72px;
+  padding:12px 18px;
+  cursor:pointer;
+}
+.question-summary:hover{
+  background:#fbfcfd;
+}
+.question-expand{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:6px;
+}
+.question-chevron{
+  width:30px;
+  height:30px;
+  border-radius:8px;
+  border:1px solid #dce4eb;
+  background:#fff;
+  color:#617083;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  transition:.15s ease;
+}
+.question-item.open .question-chevron{
+  transform:rotate(180deg);
+}
+.question-detail{
+  display:none;
+  padding:0 18px 18px 72px;
+  background:#fbfcfd;
+}
+.question-item.open .question-detail{display:block}
+.question-detail-card{
+  border:1px solid #e0e7ed;
+  border-radius:12px;
+  background:#fff;
+  overflow:hidden;
+}
+.question-detail-section{
+  padding:16px;
+  border-bottom:1px solid #edf1f4;
+}
+.question-detail-section:last-child{border-bottom:0}
+.question-detail-title{
+  margin:0 0 5px;
+  color:#334155;
+  font-size:12px;
+  font-weight:700;
+}
+.question-detail-help{
+  margin:0 0 12px;
+  color:#8793a3;
+  font-size:10px;
+}
+.inline-answer-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.inline-answer-row{
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) 78px 32px;
+  gap:8px;
+  align-items:center;
+}
+.inline-answer-index{
+  color:#9aa6b4;
+  font-size:10px;
+  text-align:center;
+}
+.inline-answer-row .admin-input{
+  height:36px!important;
+}
+.inline-answer-add{
+  margin-top:10px;
+}
+.no-answer-state{
+  padding:12px 14px;
+  border:1px dashed #ccd6e0;
+  border-radius:10px;
+  background:#f8fafc;
+  color:#7d8999;
+  font-size:10.5px;
+}
+.inline-config-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.inline-condition{
+  display:grid;
+  grid-template-columns:minmax(0,1.2fr) 90px minmax(0,1fr);
+  gap:8px;
+}
+.answer-count-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:25px;
+  padding:0 9px;
+  border-radius:999px;
+  background:#f4f7f9;
+  border:1px solid #e0e6ec;
+  color:#617083;
+  font-size:10px;
+  font-weight:650;
+}
+
+/* Remove previous top tab presentation */
+#onboardingSetupScreen .admin-onboarding-tabs{display:none!important}
+
+@media(max-width:1000px){
+  .question-summary{
+    grid-template-columns:36px minmax(220px,1fr) 120px 90px;
+  }
+  .question-summary > :nth-child(5),
+  .question-summary > :nth-child(6){
+    grid-column:auto;
+  }
+  .question-detail{padding-left:18px}
+}
+@media(max-width:820px){
+  .onboarding-area-selector{grid-template-columns:1fr}
+  .app-tabs{width:100%}
+  .app-tab{flex:1;min-width:0}
+  .question-summary{grid-template-columns:34px 1fr}
+  .question-summary > *:not(.question-order):not(.question-main){
+    grid-column:2;
+    justify-self:start;
+  }
+  .question-detail{padding:0 12px 12px}
+  .inline-config-grid,.inline-condition{grid-template-columns:1fr}
+}
+
+
+/* ===== V13 · ONBOARDING ADMIN REFINEMENTS ===== */
+
+/* 1 · Keep only the app-native tabs and make the two major areas unmistakable */
+.onboarding-area-selector{display:none!important}
+
+#onboardingSetupScreen .app-tabs{
+  display:flex!important;
+  width:min(620px,100%);
+  margin:2px 0 28px!important;
+  padding:5px!important;
+  gap:5px!important;
+  background:#edf1f4!important;
+  border-radius:15px!important;
+}
+#onboardingSetupScreen .app-tab{
+  flex:1;
+  min-width:0!important;
+  height:46px!important;
+  border-radius:11px!important;
+  color:#909aa7!important;
+  font-size:12px!important;
+  font-weight:600!important;
+}
+#onboardingSetupScreen .app-tab.active{
+  background:#fff!important;
+  color:#173458!important;
+  font-weight:750!important;
+  box-shadow:0 2px 7px rgba(16,40,71,.09)!important;
+}
+.tab-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:24px;
+  height:20px;
+  margin-left:7px;
+  padding:0 7px;
+  border-radius:999px;
+  background:#dde4ea;
+  color:#6e7b8c;
+  font-size:9.5px;
+  font-weight:800;
+  vertical-align:middle;
+}
+.app-tab.active .tab-count{
+  background:#e7f6f2;
+  color:#168f83;
+}
+#adminResponsesTab .tab-count{
+  background:#e8eefc;
+  color:#315fd3;
+}
+#adminResponsesTab.active .tab-count{
+  background:#dfe9ff;
+  color:#2756ca;
+}
+
+/* 2 · Nested question accordion is flush; hierarchy comes from header contrast/shadow */
+.question-item{
+  background:#fff;
+}
+.question-summary{
+  position:relative;
+  transition:.15s ease;
+}
+.question-item.open > .question-summary{
+  z-index:2;
+  background:#f3f6f9;
+  box-shadow:0 5px 12px rgba(16,40,71,.08);
+}
+.question-detail{
+  padding:0!important;
+  background:#fff!important;
+}
+.question-detail-card{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:#fff!important;
+}
+.question-detail-section{
+  padding:18px 20px 18px 78px!important;
+  background:#fff;
+}
+.question-detail-section:first-child{
+  padding-top:22px!important;
+}
+
+/* 3 · CSS chevrons: no font glyphs, so they render consistently */
+.setup-category-chevron,
+.question-chevron{
+  position:relative;
+  font-size:0!important;
+}
+.setup-category-chevron::before,
+.question-chevron::before{
+  content:"";
+  width:7px;
+  height:7px;
+  border-right:1.7px solid currentColor;
+  border-bottom:1.7px solid currentColor;
+  transform:rotate(45deg) translate(-1px,-1px);
+  transform-origin:center;
+  transition:transform .15s ease;
+}
+.setup-category.collapsed .setup-category-chevron{
+  transform:none!important;
+}
+.setup-category.collapsed .setup-category-chevron::before{
+  transform:rotate(-45deg) translate(-1px,1px);
+}
+.question-item.open .question-chevron{
+  transform:none!important;
+}
+.question-item.open .question-chevron::before{
+  transform:rotate(225deg) translate(-1px,-1px);
+}
+
+/* 4 · Answer order is represented by list position; no unexplained numeric field */
+.inline-answer-row{
+  grid-template-columns:28px minmax(0,1fr) 32px!important;
+  gap:9px!important;
+}
+.inline-answer-index{
+  font-size:0!important;
+  cursor:grab;
+}
+.inline-answer-index::before{
+  content:"⋮⋮";
+  font-size:14px;
+  color:#9aa6b4;
+  letter-spacing:-2px;
+}
+.inline-answer-row .answer-order-input{display:none!important}
+
+/* 5 · Clear briefcase icon for Opportunities */
+.opportunity-nav-icon,
+.opportunity-found-icon{
+  width:16px;
+  height:16px;
+  flex:0 0 auto;
+  display:block;
+}
+.found{
+  gap:8px;
+}
+.found .opportunity-found-icon{
+  color:#315ed9;
+}
+
+@media(max-width:820px){
+  #onboardingSetupScreen .app-tabs{width:100%}
+  .question-detail-section{padding:16px!important}
+}
+
+
+/* ===== V14 · OPTIONAL QUESTION DEPENDENCY ===== */
+.dependency-toggle-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.dependency-toggle-copy strong{
+  display:block;
+  color:#334155;
+  font-size:12px;
+  margin-bottom:3px;
+}
+.dependency-toggle-copy span{
+  display:block;
+  color:#8793a3;
+  font-size:10px;
+  line-height:1.4;
+}
+.dependency-control{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#617083;
+  font-size:10.5px;
+  white-space:nowrap;
+}
+.dependency-switch{
+  position:relative;
+  width:38px;
+  height:22px;
+  border:0;
+  border-radius:999px;
+  background:#cfd8e1;
+  cursor:pointer;
+  transition:.15s ease;
+  flex:0 0 auto;
+}
+.dependency-switch::after{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(16,40,71,.18);
+  transition:.15s ease;
+}
+.dependency-switch.active{
+  background:#168f83;
+}
+.dependency-switch.active::after{
+  left:19px;
+}
+.dependency-fields{
+  margin-top:15px;
+  padding-top:15px;
+  border-top:1px solid #edf1f4;
+}
+.dependency-fields[hidden]{display:none!important}
+
+
+/* ===== V15 · QUESTIONS HEADER TOOLBAR + STRONGER ADMIN TABS ===== */
+
+/* Setup / Responses: same native tab pattern, stronger selected state */
+#onboardingSetupScreen .app-tabs{
+  width:min(640px,100%)!important;
+  background:#eef2f6!important;
+  border:1px solid #dbe3ec!important;
+  box-shadow:inset 0 1px 2px rgba(16,40,71,.03)!important;
+}
+#onboardingSetupScreen .app-tab{
+  position:relative;
+  color:#7f8a99!important;
+  border:1px solid transparent!important;
+}
+#onboardingSetupScreen .app-tab.active{
+  background:#fff!important;
+  color:#173458!important;
+  border-color:#8fb3ff!important;
+  box-shadow:0 0 0 2px rgba(47,104,255,.08),0 2px 7px rgba(16,40,71,.08)!important;
+}
+#onboardingSetupScreen .tab-count{
+  background:#e2ebff!important;
+  color:#2f68ff!important;
+  border:1px solid #bcd0ff;
+  font-weight:800!important;
+}
+#onboardingSetupScreen .app-tab.active .tab-count{
+  background:#dbe8ff!important;
+  color:#235de6!important;
+  border-color:#9fbbff!important;
+}
+
+/* Questions heading + search + count + CTA become one unified header/toolbar */
+.questions-toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  margin-bottom:22px;
+  padding:18px 20px;
+  background:#fff;
+  border:1px solid #dce4eb;
+  border-radius:14px;
+  box-shadow:0 2px 8px rgba(16,40,71,.05);
+}
+.questions-toolbar-main{
+  min-width:0;
+}
+.questions-toolbar-title-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:5px;
+}
+.questions-toolbar h1{
+  margin:0;
+  color:#334155;
+  font-size:18px;
+  line-height:1.2;
+}
+.questions-toolbar p{
+  margin:0 0 14px;
+  color:#7a8798;
+  font-size:11px;
+  line-height:1.45;
+}
+.questions-toolbar-tools{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.questions-toolbar .admin-search{
+  width:min(360px,100%);
+  flex:0 1 360px;
+}
+.questions-toolbar .meta-chip{
+  white-space:nowrap;
+}
+.questions-toolbar-action{
+  align-self:center;
+}
+.questions-toolbar-action .btn{
+  min-width:132px;
+  height:40px!important;
+}
+
+@media(max-width:820px){
+  .questions-toolbar{
+    grid-template-columns:1fr;
+    align-items:stretch;
+  }
+  .questions-toolbar-tools{
+    flex-wrap:wrap;
+  }
+  .questions-toolbar .admin-search{
+    width:100%;
+    flex-basis:100%;
+  }
+  .questions-toolbar-action{
+    justify-self:stretch;
+  }
+  .questions-toolbar-action .btn{
+    width:100%;
+  }
+}
+
+
+/* ===== V16 · TOOLBAR ALIGNMENT + STRONGER ACTIVE TAB ===== */
+
+/* Search + count chip live beside the CTA, in that order */
+.questions-toolbar{
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:end!important;
+}
+.questions-toolbar-main p{
+  margin-bottom:0!important;
+}
+.questions-toolbar-tools{
+  display:none!important;
+}
+.questions-toolbar-action{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+}
+.questions-toolbar-action .admin-search{
+  width:300px;
+  flex:0 0 300px;
+}
+.questions-toolbar-action .questions-count-chip{
+  min-height:30px;
+  padding:0 11px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  white-space:nowrap;
+  background:#e7efff;
+  border:1px solid #9fbbff;
+  color:#2f68ff;
+  font-size:10.5px;
+  font-weight:800;
+  box-shadow:0 0 0 2px rgba(47,104,255,.04);
+}
+
+/* Stronger active tab: blue border + muted blue background */
+#onboardingSetupScreen .app-tab.active{
+  background:#edf3ff!important;
+  border-color:#7fa8ff!important;
+  color:#173458!important;
+  box-shadow:0 0 0 2px rgba(47,104,255,.08),0 2px 7px rgba(16,40,71,.07)!important;
+}
+#onboardingSetupScreen .app-tab.active .tab-count{
+  background:#d7e5ff!important;
+  border-color:#8fb0ff!important;
+  color:#235de6!important;
+}
+
+@media(max-width:980px){
+  .questions-toolbar{
+    grid-template-columns:1fr!important;
+    align-items:stretch!important;
+  }
+  .questions-toolbar-action{
+    justify-content:flex-start;
+    flex-wrap:wrap;
+  }
+  .questions-toolbar-action .admin-search{
+    width:100%;
+    flex:1 1 100%;
+  }
+}
+
+</style>
+</head>
+<body>
+<section class="screen active" id="loginScreen"><div class="login-shell"><div class="login-brand"><div class="login-brand-inner"><img class="ramaz-seal-img" src="imgs/logo.png" alt="Ramaz School"><div class="login-copy"><b>Ramaz Connect</b><h1>Find your next opportunity.</h1><p>Connect with alumni and companies, and apply for opportunities.</p></div></div></div><div class="login-panel"><div class="login-card"><h2>Get Started!</h2><button class="login-btn primary" onclick="openScreen('opportunitiesScreen','opportunities')">Log in</button><div class="login-sep">Don't have an account?</div><button class="login-btn secondary" onclick="openOnboarding(0)">Sign up</button></div></div></div></section>
+
+<section class="screen" id="opportunitiesScreen"><div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div><nav class="nav"><button class="nav-item active" data-nav="opportunities" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button><button class="nav-item">▦ <span>Companies</span></button><button class="nav-item">♧ <span>Candidates</span></button><button class="nav-item" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button>
+        
+<button class="nav-item" data-nav="profile" onclick="openScreen('profileScreen','profile')">♙ <span>Profile</span></button></nav></aside><main class="main"><header class="topbar"><h2>Opportunities</h2><div class="spacer"></div><div class="top-actions"><div class="role">Employer</div><div class="avatar">DR</div></div></header><div class="page"><div class="tools"><div class="search"><input placeholder="Search by opportunity"></div><div class="found"><svg class="opportunity-found-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>21 opportunities found</span></div><div class="spacer"></div><button class="btn outline">Filters</button><button class="btn primary">+ Create Opportunity</button></div><div class="tabs"><div class="tab active">My opportunities</div><div class="tab">All</div></div><div class="linkedin"><div class="in">in</div><div class="linkedin-copy"><b>Connect your LinkedIn account</b><span>Import your experience automatically, stand out to employers, and apply faster with pre-filled forms.</span></div><button class="btn primary">Connect</button></div><div class="grid">
+<article class="card opp-card" onclick="openOpportunity()"><div class="opp-head"><div class="opp-head-main"><h3 class="opp-title">Software Developer</h3><div class="company">▦ Innovatec Solutions</div><div class="meta"><span>♧ 2 Applicants</span><span>⌖ New York, NY</span></div></div><div class="opp-status"><span class="chip blue">Career / Job opportunity</span><span class="chip green">New</span><span class="deadline">Apply until <b>Aug 28, 2026</b></span><span class="chip green">$ Paid</span></div></div><div class="tags"><span class="chip outline">Marketing</span><span class="chip outline">Technology</span></div><div class="season">▣ Fall 2026</div><div class="desc">Innovatec Solutions is looking for a Software Developer to join our team and help build customized technology solutions for small and medium-sized businesses.</div><div class="card-actions"><button class="btn dark">◉ View applicants</button><button class="btn dark">✎ Edit</button></div></article>
+<article class="card opp-card" onclick="openOpportunity()"><div class="opp-head"><div class="opp-head-main"><h3 class="opp-title">Test nombre</h3><div class="company">▦ Lola Dell oso</div><div class="meta"><span>♧ 1 Applicants</span><span>⌖ Miami, FL</span></div></div><div class="opp-status"><span class="chip blue">Career / Job opportunity</span><span class="chip green">New</span><span class="deadline">Apply until <b>Aug 28, 2026</b></span></div></div><div class="tags"><span class="chip outline">Finance</span><span class="chip outline">Marketing</span><span class="chip outline">Healthcare</span><span class="chip outline">Education</span></div><div class="season">▣ Summer 2026</div><div class="desc">aaaaaaaaaaaaaa</div><div class="card-actions"><button class="btn dark">◉ View applicants</button><button class="btn dark">✎ Edit</button></div></article>
+<article class="card opp-card" onclick="openOpportunity()"><div class="opp-head"><div class="opp-head-main"><h3 class="opp-title">ABRIL</h3><div class="company">▦ Ramaz Connect</div><div class="meta"><span>♧ 2 Applicants</span><span>⌖ San Francisco, CA</span></div></div><div class="opp-status"><span class="chip blue">Internship</span><span class="chip green">New</span><span class="deadline">Apply until <b>Sep 30, 2026</b></span></div></div><div class="tags"><span class="chip outline">Technology</span><span class="chip outline">Education</span></div><div class="season">▣ Fall 2026</div><div class="desc">Opportunity for Ramaz alumni and students to connect with organizations and build professional experience.</div><div class="card-actions"><button class="btn dark">◉ View applicants</button><button class="btn dark">✎ Edit</button></div></article>
+<article class="card opp-card" onclick="openOpportunity()"><div class="opp-head"><div class="opp-head-main"><h3 class="opp-title">New Mentorship test</h3><div class="company">▦ Apex Financial Group</div><div class="meta"><span>♧ 1 Applicants</span><span>⌖ New York, NY</span></div></div><div class="opp-status"><span class="chip blue">Career / Job opportunity</span><span class="chip green">New</span><span class="deadline">Apply until <b>Aug 11, 2026</b></span></div></div><div class="tags"><span class="chip outline">Finance</span><span class="chip outline">Mentorship</span></div><div class="season">▣ Summer 2026</div><div class="desc">Connect with professionals, grow your network and receive guidance for your next career step.</div><div class="card-actions"><button class="btn dark">◉ View applicants</button><button class="btn dark">✎ Edit</button></div></article>
+</div></div></main></div></section>
+
+<section class="screen" id="opportunityDetailScreen"><div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div><nav class="nav"><button class="nav-item active" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button><button class="nav-item">▦ <span>Companies</span></button><button class="nav-item">♧ <span>Candidates</span></button><button class="nav-item" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button>
+        
+<button class="nav-item" onclick="openScreen('profileScreen','profile')">♙ <span>Profile</span></button></nav></aside><main class="main"><header class="topbar"><h2>Opportunity</h2><div class="spacer"></div><div class="role">Employer</div><div class="avatar" style="margin-left:12px">DR</div></header><div class="page"><div class="detail-wrap"><button class="back" onclick="openScreen('opportunitiesScreen','opportunities')">‹ Back to opportunities</button><div class="detail-grid"><div class="detail-main"><section class="card hero"><div class="hero-layout"><div class="hero-copy"><div class="hero-company"><div class="hero-logo">GT</div><div><b>GlobalTech Solutions</b><div style="font-size:12px;color:rgba(255,255,255,.68);margin-top:3px">New York, NY · Hybrid · Intern</div></div></div><div class="hero-title">Digital Marketing<br>Internship</div><div class="hero-tags"><span>Marketing</span><span>Media</span><span>Education</span></div></div><div class="photo" style="background-image:url('imgs/oportunidad.png')"><div class="accept">● Accepting applications</div></div></div></section><section class="card content"><div class="section-label">About this opportunity</div><p>Join our marketing team to support social media campaigns, content creation, and analytics tracking. Ideal for students interested in digital marketing and brand strategy.</p></section><section class="card content"><div class="section-label">Details</div><div class="details"><div class="tile"><small>Opportunity type</small><b>Internship</b></div><div class="tile"><small>Published</small><b>Apr 23, 2026</b></div><div class="tile"><small>Location</small><b>New York, NY</b></div><div class="tile"><small>Compensation</small><b>Paid</b></div></div></section></div><aside class="detail-side"><section class="card side-card"><div class="section-label">Location</div><div class="side-line"><b style="color:#223148">Physical location</b><br>New York, NY</div></section><button class="btn dark" style="height:52px">✎ Edit opportunity</button><section class="card side-card"><div class="section-label">Status timeline</div><div class="status-list"><div class="status">Published Apr 23, 2026</div><div class="status">24 candidates so far</div><div class="status">Accepting applications</div></div></section></aside></div></div></div></main></div></section>
+
+<section class="screen" id="profileScreen"><div class="app-shell"><aside class="sidebar"><div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div><nav class="nav"><button class="nav-item" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button><button class="nav-item">▦ <span>Companies</span></button><button class="nav-item">♧ <span>Candidates</span></button><button class="nav-item" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button><button class="nav-item active">♙ <span>Profile</span></button></nav></aside><main class="main"><header class="topbar"><h2>Profile</h2><div class="spacer"></div><div class="role">Employer</div><div class="avatar" style="margin-left:12px">DR</div></header><div class="page"><div class="profile-wrap"><button class="back" onclick="openScreen('opportunitiesScreen','opportunities')">‹ Back</button><section class="card progress-card"><div class="progress-head"><span>Profile completeness</span><span style="color:#0b73e7">50%</span></div><div class="track"><div class="fill"></div></div><div class="progress-meta"><span class="done">✓ Personal info</span><span class="done">✓ Contact details</span><span>◌ LifeCycle</span><span>◌ Preferences</span><span class="done">✓ Profile picture</span><span>in LinkedIn connected</span></div><div class="linkedin" style="margin:0;min-height:62px"><div class="in">in</div><div class="linkedin-copy"><b>Connect LinkedIn</b><span>Adds +17% to your profile score</span></div><button class="btn primary">Connect</button></div></section><div class="profile-layout"><section class="card profile-main"><div class="profile-tabs"><div class="profile-tab active">Personal</div><div class="profile-tab">Contact</div><div class="profile-tab">LifeCycle</div><div class="profile-tab">Preferences</div></div><div class="form"><div class="form-section"><div class="form-title">♙ &nbsp;Name</div><div class="field"><label>First name *</label><input value="Lola"></div><div class="field"><label>Middle name</label><input placeholder="Middle Name"></div><div class="field"><label>Last name *</label><input value="Dell oso"></div></div><div class="form-section"><div class="form-title">♙ &nbsp;Basic information</div><div class="field"><label>Marital status</label><input placeholder="Select"></div><div class="field"><label>Occupation</label><input placeholder="Occupation"></div></div></div></section><aside class="profile-side"><section class="card picture"><b>♙ &nbsp;Profile picture</b><div class="circle">LD</div></section><button class="btn dark" style="height:52px">Save</button></aside></div></div></div></main></div></section>
+<script>
+function openScreen(id,nav){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.nav===nav));window.scrollTo({top:0,behavior:'smooth'})}
+function openOpportunity(){openScreen('opportunityDetailScreen','opportunities')}
+
+let onboardingStep = 0;
+const onboardingStepNames = [
+  "Profile & location",
+  "Category 1",
+  "Category 2",
+  "Category 3"
+];
+
+function openOnboarding(step){
+  onboardingStep = typeof step === "number" ? step : 0;
+  openScreen("onboardingScreen","onboarding");
+  renderOnboarding();
+}
+
+function goOnboardingStep(step){
+  onboardingStep = Math.max(0,Math.min(3,step));
+  renderOnboarding();
+}
+
+function renderOnboarding(){
+  document.querySelectorAll("#onboardingScreen .onboarding-step").forEach(step=>{
+    step.style.display = Number(step.dataset.step) === onboardingStep ? "block" : "none";
+  });
+
+  const progressValues = [25,50,75,100];
+  const fill = document.getElementById("footerStepFill");
+  if(fill){
+    fill.style.width = progressValues[onboardingStep] + "%";
+  }
+
+  document.querySelectorAll("#onboardingProgress .footer-step-label").forEach((label,index)=>{
+    label.classList.toggle("active", index === onboardingStep);
+    label.classList.toggle("done", index < onboardingStep);
+  });
+
+  const backBtn = document.getElementById("onboardingBackBtn");
+  const nextBtn = document.getElementById("onboardingNextBtn");
+
+  if(backBtn){
+    backBtn.style.visibility = onboardingStep === 0 ? "hidden" : "visible";
+  }
+
+  if(nextBtn){
+    nextBtn.textContent = onboardingStep === 3 ? "Submit" : "Next";
+  }
+}
+
+function nextOnboarding(){
+  if(onboardingStep < 3){
+    onboardingStep += 1;
+    renderOnboarding();
+  }else{
+    submitOnboarding();
+  }
+}
+
+function prevOnboarding(){
+  if(onboardingStep > 0){
+    onboardingStep -= 1;
+    renderOnboarding();
+  }
+}
+
+function submitOnboarding(){
+  openScreen("onboardingSuccessScreen","");
+}
+
+function updateUploadName(input){
+  const label = document.getElementById("profilePictureFileName");
+  if(!label) return;
+  label.textContent = input.files && input.files[0] ? input.files[0].name : "";
+}
+
+
+function openQuestionEditor(isNew){
+  openScreen("questionEditorScreen","setup");
+  const title = document.getElementById("questionEditorTopTitle");
+  const text = document.getElementById("editorQuestionText");
+  if(title) title.textContent = isNew ? "Add question" : "Edit question";
+  if(text) text.value = isNew ? "" : "What type of opportunity are you looking for?";
+  const type = document.getElementById("answerTypeSelect");
+  if(type) type.value = "Multiple choice";
+  updateAnswerTypeUI();
+}
+function updateAnswerTypeUI(){
+  const type = document.getElementById("answerTypeSelect");
+  const panel = document.getElementById("answerOptionsPanel");
+  if(!type || !panel) return;
+  panel.style.display = ["Multiple choice","Single choice"].includes(type.value) ? "block" : "none";
+}
+function addAnswerOption(){
+  const list = document.getElementById("answerOptionList");
+  if(!list) return;
+  const row = document.createElement("div");
+  row.className = "option-row";
+  const next = list.children.length + 1;
+  row.innerHTML = '<div class="drag-handle">⋮⋮</div><input class="admin-input" placeholder="Answer option"><input class="admin-input" value="'+next+'" type="number"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button>';
+  list.appendChild(row);
+}
+function toggleLearningQuestion(){
+  const box = document.getElementById("learningConditional");
+  if(!box) return;
+  const categoryStep = document.querySelector('[data-step="1"]');
+  const checked = categoryStep ? categoryStep.querySelectorAll('.choice-option input:checked').length : 0;
+  box.style.display = checked ? "block" : "none";
+}
+
+
+function showAdminOnboardingTab(tab){
+  const questions = tab === "questions";
+  const qTab = document.getElementById("adminQuestionsTab");
+  const rTab = document.getElementById("adminResponsesTab");
+  const qPanel = document.getElementById("adminQuestionsPanel");
+  const rPanel = document.getElementById("adminResponsesPanel");
+  if(qTab) qTab.classList.toggle("active",questions);
+  if(rTab) rTab.classList.toggle("active",!questions);
+  if(qPanel) qPanel.classList.toggle("active",questions);
+  if(rPanel) rPanel.classList.toggle("active",!questions);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function openAdminOnboarding(tab){
+  openScreen("onboardingSetupScreen","setup");
+  showAdminOnboardingTab(tab || "questions");
+}
+
+
+function toggleSetupCategory(header){
+  const category = header.closest(".setup-category");
+  if(category) category.classList.toggle("collapsed");
+}
+function toggleQuestionItem(summary){
+  const item = summary.closest(".question-item");
+  if(item) item.classList.toggle("open");
+}
+function addInlineAnswer(button){
+  const section = button.closest(".question-detail-section");
+  const list = section ? section.querySelector(".inline-answer-list") : null;
+  if(!list) return;
+  const next = list.children.length + 1;
+  const row = document.createElement("div");
+  row.className = "inline-answer-row";
+  row.innerHTML = '<div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" placeholder="Answer text"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button>';
+  list.appendChild(row);
+}
+
+
+function toggleQuestionDependency(button){
+  const section = button.closest(".dependency-section");
+  if(!section) return;
+  const fields = section.querySelector(".dependency-fields");
+  const state = section.querySelector(".dependency-state");
+  const item = button.closest(".question-item");
+  const enabled = !button.classList.contains("active");
+
+  button.classList.toggle("active",enabled);
+  button.setAttribute("aria-checked",enabled ? "true" : "false");
+  if(fields) fields.hidden = !enabled;
+  if(state) state.textContent = enabled ? "Yes" : "No";
+
+  if(item){
+    const conditionalChip = item.querySelector(".meta-chip.active");
+    const subtitle = item.querySelector(".question-main small");
+    if(conditionalChip && conditionalChip.textContent.trim()==="Conditional"){
+      conditionalChip.style.display = enabled ? "" : "none";
+    }
+    if(subtitle){
+      subtitle.textContent = enabled ? "Predefined answers · Conditional" : "Predefined answers";
+    }
+  }
+}
+
+</script>
+
+
+<!-- ================= ADMIN · ONBOARDING SETUP ================= -->
+<section class="screen" id="onboardingSetupScreen">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div>
+      <nav class="nav">
+        <button class="nav-item" data-nav="opportunities" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button>
+        <button class="nav-item">▦ <span>Companies</span></button>
+        <button class="nav-item">♧ <span>Candidates</span></button>
+        <button class="nav-item active" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button>
+        
+        <button class="nav-item" data-nav="profile" onclick="openScreen('profileScreen','profile')">♙ <span>Profile</span></button>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar"><h2>Onboarding</h2><div class="spacer"></div><div class="role">Admin</div><div class="avatar" style="margin-left:12px">DR</div></header>
+      
+<div class="admin-page">
+  <div class="admin-heading">
+    <div class="admin-heading-copy">
+      <h1>Onboarding</h1>
+      <p>Configure the onboarding experience and review the information submitted by users from one place.</p>
+    </div>
+  </div>
+
+  
+<div class="app-tabs" role="tablist">
+  <button class="app-tab active" id="adminQuestionsTab" onclick="showAdminOnboardingTab('questions')">Setup <span class="tab-count">9</span></button>
+  <button class="app-tab" id="adminResponsesTab" onclick="showAdminOnboardingTab('responses')">Responses <span class="tab-count">48</span></button>
+</div>
+
+
+  <div class="admin-onboarding-panel active" id="adminQuestionsPanel">
+    <div class="questions-toolbar">
+      <div class="questions-toolbar-main">
+        <div class="questions-toolbar-title-row">
+          <h1>Questions</h1>
+        </div>
+        <p>Configure each question and, when applicable, manage its predefined answers directly inside the question.</p>
+      </div>
+      <div class="questions-toolbar-action">
+        <input class="admin-search" placeholder="Search questions">
+        <span class="questions-count-chip">9 questions</span>
+        <button class="btn primary" onclick="openQuestionEditor(true)">+ Add question</button>
+      </div>
+    </div>
+
+    <section class="setup-category">
+      <div class="setup-category-header" onclick="toggleSetupCategory(this)">
+        <div class="setup-category-header-copy"><h2>Category 1</h2><p>Interests and opportunity preferences</p></div>
+        <span class="setup-count">4 questions</span><span class="setup-category-chevron" aria-hidden="true"></span>
+      </div>
+      <div class="setup-category-body">
+
+        <div class="question-item">
+          <div class="question-summary" onclick="toggleQuestionItem(this)">
+            <div class="question-order">1</div>
+            <div class="question-main"><strong>Tell us a little about yourself</strong><small>Free-form answer</small></div>
+            <span class="type-chip">Long text</span>
+            <span class="meta-chip required">Required</span>
+            <span class="answer-count-chip">No options</span>
+            <div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div>
+          </div>
+          <div class="question-detail">
+            <div class="question-detail-card">
+              <div class="question-detail-section">
+                <div class="question-detail-title">Answer configuration</div>
+                <p class="question-detail-help">This question accepts a free-form long text response, so no predefined answers are required.</p>
+                <div class="no-answer-state">Users will see a text area and enter their own answer.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-item open">
+          <div class="question-summary" onclick="toggleQuestionItem(this)">
+            <div class="question-order">2</div>
+            <div class="question-main"><strong>What type of opportunity are you looking for?</strong><small>Predefined answer set</small></div>
+            <span class="type-chip">Multiple choice</span>
+            <span class="meta-chip required">Required</span>
+            <span class="answer-count-chip">4 answers</span>
+            <div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div>
+          </div>
+          <div class="question-detail">
+            <div class="question-detail-card">
+              <div class="question-detail-section">
+                <div class="question-detail-title">Predefined answers</div>
+                <p class="question-detail-help">Add the options users can choose from. Their order follows the list shown below.</p>
+                <div class="inline-answer-list">
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Professional opportunities"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Educational opportunities"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Networking opportunities"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Volunteer opportunities"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+                </div>
+                <button class="btn outline inline-answer-add" onclick="addInlineAnswer(this)">+ Add answer</button>
+              </div>
+              <div class="question-detail-section">
+                <div class="question-detail-title">Question settings</div>
+                <div class="inline-config-grid">
+                  <div class="admin-field"><label>Answer type</label><select class="admin-select"><option>Multiple choice</option></select></div>
+                  <div class="admin-field"><label>Order</label><input class="admin-input" value="2" type="number"></div>
+                  <div class="admin-field"><label>Status</label><div class="switch-line"><span class="fake-switch"></span>Active</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-summary" onclick="toggleQuestionItem(this)">
+            <div class="question-order">3</div>
+            <div class="question-main"><strong>What would you like to learn?</strong><small>Predefined answers · Conditional</small></div>
+            <span class="type-chip">Multiple choice</span>
+            <span class="meta-chip active">Conditional</span>
+            <span class="answer-count-chip">4 answers</span>
+            <div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div>
+          </div>
+          <div class="question-detail">
+            <div class="question-detail-card">
+              <div class="question-detail-section">
+                <div class="question-detail-title">Predefined answers</div>
+                <p class="question-detail-help">Options available to the user when this question becomes visible.</p>
+                <div class="inline-answer-list">
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Professional skills"><button class="icon-btn">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Languages"><button class="icon-btn">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="Personal development"><button class="icon-btn">⌫</button></div>
+                  <div class="inline-answer-row"><div class="inline-answer-index" title="Drag to reorder"></div><input class="admin-input" value="New skills"><button class="icon-btn">⌫</button></div>
+                </div>
+                <button class="btn outline inline-answer-add">+ Add answer</button>
+              </div>
+              <div class="question-detail-section dependency-section">
+                <div class="dependency-toggle-row">
+                  <div class="dependency-toggle-copy">
+                    <strong>Has dependency</strong>
+                    <span>Show this question only when a previous answer matches a condition.</span>
+                  </div>
+                  <div class="dependency-control">
+                    <button class="dependency-switch active" type="button" role="switch" aria-checked="true" onclick="toggleQuestionDependency(this)"></button>
+                    <span class="dependency-state">Yes</span>
+                  </div>
+                </div>
+                <div class="dependency-fields">
+                  <div class="question-detail-title">Display condition</div>
+                  <div class="inline-condition">
+                    <select class="admin-select"><option>What type of opportunity are you looking for?</option></select>
+                    <select class="admin-select"><option>is</option></select>
+                    <select class="admin-select"><option>Educational opportunities</option></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-item">
+          <div class="question-summary" onclick="toggleQuestionItem(this)">
+            <div class="question-order">4</div>
+            <div class="question-main"><strong>What is your expected salary?</strong><small>Numeric response</small></div>
+            <span class="type-chip">Number</span>
+            <span class="meta-chip active">Active</span>
+            <span class="answer-count-chip">No options</span>
+            <div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div>
+          </div>
+          <div class="question-detail">
+            <div class="question-detail-card"><div class="question-detail-section"><div class="question-detail-title">Answer configuration</div><div class="no-answer-state">Users will enter a numeric value. No predefined answers are required.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="setup-category collapsed">
+      <div class="setup-category-header" onclick="toggleSetupCategory(this)">
+        <div class="setup-category-header-copy"><h2>Category 2</h2><p>Dates and availability</p></div>
+        <span class="setup-count">2 questions</span><span class="setup-category-chevron" aria-hidden="true"></span>
+      </div>
+      <div class="setup-category-body">
+        <div class="question-item"><div class="question-summary" onclick="toggleQuestionItem(this)"><div class="question-order">5</div><div class="question-main"><strong>When is your birthdate?</strong><small>Date answer</small></div><span class="type-chip">Date</span><span class="meta-chip active">Active</span><span class="answer-count-chip">No options</span><div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div></div><div class="question-detail"><div class="question-detail-card"><div class="question-detail-section"><div class="question-detail-title">Answer configuration</div><div class="no-answer-state">Users will answer with a date picker. No predefined answers are required.</div></div></div></div></div>
+        <div class="question-item"><div class="question-summary" onclick="toggleQuestionItem(this)"><div class="question-order">6</div><div class="question-main"><strong>When would you like to start working?</strong><small>Date answer</small></div><span class="type-chip">Date</span><span class="meta-chip active">Active</span><span class="answer-count-chip">No options</span><div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div></div><div class="question-detail"><div class="question-detail-card"><div class="question-detail-section"><div class="question-detail-title">Answer configuration</div><div class="no-answer-state">Users will answer with a date picker. No predefined answers are required.</div></div></div></div></div>
+      </div>
+    </section>
+
+    <section class="setup-category collapsed">
+      <div class="setup-category-header" onclick="toggleSetupCategory(this)">
+        <div class="setup-category-header-copy"><h2>Category 3</h2><p>Experience and profile details</p></div>
+        <span class="setup-count">3 questions</span><span class="setup-category-chevron" aria-hidden="true"></span>
+      </div>
+      <div class="setup-category-body">
+        <div class="question-item"><div class="question-summary" onclick="toggleQuestionItem(this)"><div class="question-order">7</div><div class="question-main"><strong>Upload a profile picture</strong><small>Image file</small></div><span class="type-chip">File</span><span class="meta-chip active">Active</span><span class="answer-count-chip">No options</span><div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div></div><div class="question-detail"><div class="question-detail-card"><div class="question-detail-section"><div class="no-answer-state">Users will upload an image file.</div></div></div></div></div>
+        <div class="question-item"><div class="question-summary" onclick="toggleQuestionItem(this)"><div class="question-order">8</div><div class="question-main"><strong>How many years of professional experience do you have?</strong><small>Numeric answer</small></div><span class="type-chip">Number</span><span class="meta-chip active">Active</span><span class="answer-count-chip">No options</span><div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div></div><div class="question-detail"><div class="question-detail-card"><div class="question-detail-section"><div class="no-answer-state">Users will enter a numeric value.</div></div></div></div></div>
+        <div class="question-item"><div class="question-summary" onclick="toggleQuestionItem(this)"><div class="question-order">9</div><div class="question-main"><strong>What time do you get up in the morning?</strong><small>Time answer</small></div><span class="type-chip">Time</span><span class="meta-chip active">Active</span><span class="answer-count-chip">No options</span><div class="question-expand"><button class="icon-btn" onclick="event.stopPropagation();openQuestionEditor(false)">✎</button><span class="question-chevron" aria-hidden="true"></span></div></div><div class="question-detail"><div class="question-detail-card"><div class="question-detail-section"><div class="no-answer-state">Users will answer with a time picker.</div></div></div></div></div>
+      </div>
+    </section>
+</div>
+
+  <div class="admin-onboarding-panel" id="adminResponsesPanel">
+    
+        <div class="admin-heading"><div class="admin-heading-copy"><h1>User responses</h1><p>Review completion status and inspect the answers submitted by each user.</p></div></div>
+        <div class="admin-toolbar"><input class="admin-search" placeholder="Search user"><span class="meta-chip">48 users</span></div>
+        <div class="response-table">
+          <div class="response-head"><div>User</div><div>Status</div><div>Completed</div><div>Last updated</div><div></div></div>
+          <div class="response-row"><div class="response-user"><div class="response-avatar">DR</div><div><strong style="color:#26364a">Daniela Ruiz Diaz</strong><div style="font-size:10px;color:#8b97a8;margin-top:2px">Alumni</div></div></div><div><span class="meta-chip active">Completed</span></div><div class="progress-mini"><div class="progress-mini-bar"><div class="progress-mini-fill" style="width:100%"></div></div><span>100%</span></div><div>Sep 8, 2026</div><button class="btn outline" onclick="openScreen('userResponseDetailScreen','setup')">View responses</button></div>
+          <div class="response-row"><div class="response-user"><div class="response-avatar">JS</div><div><strong style="color:#26364a">John Smith</strong><div style="font-size:10px;color:#8b97a8;margin-top:2px">Student</div></div></div><div><span class="meta-chip">In progress</span></div><div class="progress-mini"><div class="progress-mini-bar"><div class="progress-mini-fill" style="width:65%"></div></div><span>65%</span></div><div>Sep 7, 2026</div><button class="btn outline" onclick="openScreen('userResponseDetailScreen','setup')">View responses</button></div>
+          <div class="response-row"><div class="response-user"><div class="response-avatar">AM</div><div><strong style="color:#26364a">Anna Miller</strong><div style="font-size:10px;color:#8b97a8;margin-top:2px">Employer</div></div></div><div><span class="meta-chip active">Completed</span></div><div class="progress-mini"><div class="progress-mini-bar"><div class="progress-mini-fill" style="width:100%"></div></div><span>100%</span></div><div>Sep 6, 2026</div><button class="btn outline" onclick="openScreen('userResponseDetailScreen','setup')">View responses</button></div>
+        </div>
+      
+  </div>
+</div>
+
+    </main>
+  </div>
+</section>
+
+<!-- ================= ADMIN · QUESTION EDITOR ================= -->
+<section class="screen" id="questionEditorScreen">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div>
+      <nav class="nav">
+        <button class="nav-item" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button>
+        <button class="nav-item">▦ <span>Companies</span></button>
+        <button class="nav-item">♧ <span>Candidates</span></button>
+        <button class="nav-item active" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button>
+        
+        <button class="nav-item" onclick="openScreen('profileScreen','profile')">♙ <span>Profile</span></button>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar"><h2 id="questionEditorTopTitle">Edit question</h2><div class="spacer"></div><div class="role">Admin</div><div class="avatar" style="margin-left:12px">DR</div></header>
+      <div class="editor-wrap">
+        <button class="back editor-back" onclick="openAdminOnboarding('questions')">‹ Back to onboarding setup</button>
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Main</h2><p>Define what users will be asked and how the answer should be captured.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="admin-field" style="margin-bottom:14px"><label>Question text</label><input id="editorQuestionText" class="admin-input" value="What type of opportunity are you looking for?"></div>
+            <div class="admin-grid-3">
+              <div class="admin-field"><label>Onboarding category</label><select class="admin-select"><option>Category 1</option><option>Category 2</option><option>Category 3</option></select></div>
+              <div class="admin-field"><label>Answer type</label><select id="answerTypeSelect" class="admin-select" onchange="updateAnswerTypeUI()"><option>Multiple choice</option><option>Single choice</option><option>Short text</option><option>Long text</option><option>Number</option><option>Date</option><option>Time</option><option>File</option></select></div>
+              <div class="admin-field"><label>Order</label><input class="admin-input" value="2" type="number"></div>
+              <div class="admin-field"><label>Required</label><div class="switch-line"><span class="fake-switch"></span>Required question</div></div>
+              <div class="admin-field"><label>Active</label><div class="switch-line"><span class="fake-switch"></span>Visible in onboarding</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="entity-panel" id="answerOptionsPanel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Answer options</h2><p>Users will choose from this predefined set. Manage the answers here instead of in a separate entity.</p></div><button class="btn outline" onclick="addAnswerOption()">+ Add option</button></div>
+          <div class="entity-panel-body">
+            <div class="option-list" id="answerOptionList">
+              <div class="option-row"><div class="drag-handle">⋮⋮</div><input class="admin-input" value="Professional opportunities"><input class="admin-input" value="1" type="number"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+              <div class="option-row"><div class="drag-handle">⋮⋮</div><input class="admin-input" value="Educational opportunities"><input class="admin-input" value="2" type="number"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+              <div class="option-row"><div class="drag-handle">⋮⋮</div><input class="admin-input" value="Networking opportunities"><input class="admin-input" value="3" type="number"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+              <div class="option-row"><div class="drag-handle">⋮⋮</div><input class="admin-input" value="Volunteer opportunities"><input class="admin-input" value="4" type="number"><button class="icon-btn" onclick="this.parentElement.remove()">⌫</button></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Display conditions</h2><p>Optionally show this question only when a previous answer matches a condition.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="switch-line" style="margin-bottom:12px"><span class="fake-switch"></span>Use a display condition</div>
+            <div class="condition-row">
+              <div class="admin-field"><label>Question</label><select class="admin-select"><option>What type of opportunity are you looking for?</option></select></div>
+              <div class="admin-field"><label>Condition</label><select class="admin-select"><option>is</option><option>is not</option></select></div>
+              <div class="admin-field"><label>Answer</label><select class="admin-select"><option>Educational opportunities</option><option>Professional opportunities</option><option>Networking opportunities</option></select></div>
+              <button class="icon-btn">⌫</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="editor-actions"><button class="btn outline" onclick="openAdminOnboarding('questions')">Cancel</button><button class="btn primary" onclick="openAdminOnboarding('questions')">Save question</button></div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ================= ADMIN · USER RESPONSE DETAIL ================= -->
+<section class="screen" id="userResponseDetailScreen">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo"><img src="imgs/logo.png" alt="Ramaz School"></div><div class="brand-name">Ramaz<br>Connect</div></div>
+      <nav class="nav">
+        <button class="nav-item" onclick="openScreen('opportunitiesScreen','opportunities')"><svg class="opportunity-nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8.5 7.5V5.5C8.5 4.95 8.95 4.5 9.5 4.5H14.5C15.05 4.5 15.5 4.95 15.5 5.5V7.5M3.5 11.5H20.5M10 11.5V13H14V11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>Opportunities</span></button>
+        <button class="nav-item">▦ <span>Companies</span></button>
+        <button class="nav-item">♧ <span>Candidates</span></button>
+        <button class="nav-item" data-nav="setup" onclick="openAdminOnboarding('questions')">⚙ <span>Onboarding</span></button>
+        
+        <button class="nav-item" onclick="openScreen('profileScreen','profile')">♙ <span>Profile</span></button>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar"><h2>User onboarding responses</h2><div class="spacer"></div><div class="role">Admin</div><div class="avatar" style="margin-left:12px">DR</div></header>
+      <div class="editor-wrap">
+        <button class="back editor-back" onclick="openAdminOnboarding('responses')">‹ Back to responses</button>
+        <div class="response-detail-head"><div class="response-avatar">DR</div><div><h1 style="margin:0 0 4px;font-size:20px;color:#173458">Daniela Ruiz Diaz</h1><div style="font-size:11px;color:#7a8798">Onboarding completed · Sep 8, 2026</div></div><span class="meta-chip active" style="margin-left:auto">Completed</span></div>
+
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Profile & location</h2><p>Basic profile information submitted during onboarding.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="answer-pair"><div class="answer-question">LinkedIn</div><div class="answer-value">linkedin.com/in/danielaruizdiaz</div></div>
+            <div class="answer-pair"><div class="answer-question">Graduation date</div><div class="answer-value">Dec 2021</div></div>
+            <div class="answer-pair"><div class="answer-question">Type of user</div><div class="answer-value">Alumni</div></div>
+            <div class="answer-pair"><div class="answer-question">Location</div><div class="answer-value">La Plata, Buenos Aires, Argentina</div></div>
+          </div>
+        </section>
+
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Category 1</h2><p>Interests and opportunity preferences.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="answer-pair"><div class="answer-question">Tell us a little about yourself</div><div class="answer-value">Designer and systems engineering student interested in technology and product design.</div></div>
+            <div class="answer-pair"><div class="answer-question">What type of opportunity are you looking for?</div><div class="answer-value">Professional opportunities, Educational opportunities</div></div>
+            <div class="answer-pair"><div class="answer-question">What would you like to learn?</div><div class="answer-value">Professional skills, Languages</div></div>
+          </div>
+        </section>
+
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Category 2</h2><p>Dates and availability.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="answer-pair"><div class="answer-question">When is your birthdate?</div><div class="answer-value">May 21, 1995</div></div>
+            <div class="answer-pair"><div class="answer-question">When would you like to start working?</div><div class="answer-value">Oct 1, 2026</div></div>
+          </div>
+        </section>
+
+        <section class="entity-panel">
+          <div class="entity-panel-header"><div class="entity-panel-header-copy"><h2>Category 3</h2><p>Experience and profile details.</p></div></div>
+          <div class="entity-panel-body">
+            <div class="answer-pair"><div class="answer-question">How many years of professional experience do you have?</div><div class="answer-value">6 years</div></div>
+            <div class="answer-pair"><div class="answer-question">What time do you get up in the morning?</div><div class="answer-value">7:00 AM</div></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- ================= ONBOARDING ================= -->
+<section class="screen" id="onboardingScreen">
+  <div class="onboarding-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-logo"><img src="imgs/logo.png" alt="Ramaz School"></div>
+        <div class="sidebar-name">Alumni<br>Network</div>
+      </div>
+      <nav class="nav-list">
+        <button class="nav-item" onclick="openScreen('opportunitiesScreen','opportunities')">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M9 7V5H15V7" stroke="currentColor" stroke-width="1.6"/></svg><span>Opportunities</span>
+        </button>
+        <button class="nav-item"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M9 4V20M15 4V20M5 9H19M5 14H19" stroke="currentColor" stroke-width="1.3"/></svg><span>Companies</span></button>
+        <button class="nav-item"><svg viewBox="0 0 24 24" fill="none"><path d="M8 12A3 3 0 1 0 8 6A3 3 0 0 0 8 12ZM16 11A2.5 2.5 0 1 0 16 6A2.5 2.5 0 0 0 16 11Z" stroke="currentColor" stroke-width="1.5"/></svg><span>Candidates</span></button>
+        
+        <button class="nav-item" onclick="openScreen('profileScreen','profile')"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 20C6 16.7 8.7 14 12 14C15.3 14 18 16.7 18 20" stroke="currentColor" stroke-width="1.5"/></svg><span>Profile</span></button>
+      </nav>
+    </aside>
+
+    <main class="onboarding-main">
+      <div class="onboarding-page">
+        <div class="onboarding-header">
+          <h1>Complete Onboarding</h1>
+          <p>Tell us you more about yourself so we can decide what type of user you are</p>
+        </div>
+
+        
+        
+
+
+        <div class="onboarding-step" data-step="0">
+          <section class="onboarding-entity">
+            <div class="onboarding-entity-header">
+              <h2>LinkedIn</h2>
+              <p>Share your LinkedIn profile</p>
+            </div>
+            <div class="onboarding-entity-body">
+              <div class="onboarding-grid-1">
+                <div class="onboarding-field"><label>LinkedIn</label><input class="onboarding-input" type="text"></div>
+                <div class="onboarding-field"><label>Graduation date</label><input class="onboarding-input" type="date"></div>
+                <div class="onboarding-field"><label>Type of user</label><select class="onboarding-select"><option value=""></option><option>Alumni</option><option>Employer</option><option>Student</option></select></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="onboarding-entity">
+            <div class="onboarding-entity-header">
+              <h2>Location</h2>
+              <p>Keep your location details up to date so we can connect you with relevant opportunities and local events.</p>
+            </div>
+            <div class="onboarding-entity-body">
+              <div class="onboarding-grid-2">
+                <div class="onboarding-field"><label>Current street address</label><input class="onboarding-input" type="text"></div>
+                <div class="onboarding-field"><label>City</label><input class="onboarding-input" type="text"></div>
+                <div class="onboarding-field"><label>State</label><input class="onboarding-input" type="text"></div>
+                <div class="onboarding-field"><label>ZIP code</label><input class="onboarding-input" type="text"></div>
+                <div class="onboarding-field"><label>Country</label><input class="onboarding-input" type="text"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="onboarding-step" data-step="1" style="display:none">
+          <section class="onboarding-entity">
+            <div class="onboarding-entity-header">
+              <h2>Category 1</h2>
+              <p>Tell us about your interests so we can personalize the opportunities you see.</p>
+            </div>
+            <div class="onboarding-entity-body">
+              <div class="param-question">
+                <div class="param-question-title">Tell us a little about yourself <span class="req-dot">*</span></div>
+                <textarea class="onboarding-textarea" placeholder="Share a short introduction"></textarea>
+              </div>
+              <div class="param-question">
+                <div class="param-question-title">What type of opportunity are you looking for? <span class="req-dot">*</span></div>
+                <div class="param-question-help">Select one or more options.</div>
+                <div class="choice-grid">
+                  <label class="choice-option"><input type="checkbox" checked onchange="toggleLearningQuestion()">Professional opportunities</label>
+                  <label class="choice-option"><input type="checkbox" onchange="toggleLearningQuestion()">Educational opportunities</label>
+                  <label class="choice-option"><input type="checkbox">Networking opportunities</label>
+                  <label class="choice-option"><input type="checkbox">Volunteer opportunities</label>
+                </div>
+                <div class="param-conditional" id="learningConditional">
+                  <div class="param-question-title">What would you like to learn?</div>
+                  <div class="choice-grid">
+                    <label class="choice-option"><input type="checkbox">Professional skills</label>
+                    <label class="choice-option"><input type="checkbox">Languages</label>
+                    <label class="choice-option"><input type="checkbox">Personal development</label>
+                    <label class="choice-option"><input type="checkbox">New skills</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="onboarding-step" data-step="2" style="display:none">
+          <section class="onboarding-entity">
+            <div class="onboarding-entity-header">
+              <h2>Category 2</h2>
+              <p>Help us understand your timing and availability.</p>
+            </div>
+            <div class="onboarding-entity-body">
+              <div class="onboarding-grid-2">
+                <div class="onboarding-field"><label>When is your birthdate?</label><input class="onboarding-input" type="date"></div>
+                <div class="onboarding-field"><label>When would you like to start working?</label><input class="onboarding-input" type="date"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="onboarding-step" data-step="3" style="display:none">
+          <section class="onboarding-entity">
+            <div class="onboarding-entity-header">
+              <h2>Category 3</h2>
+              <p>Finish your profile with a few final details.</p>
+            </div>
+            <div class="onboarding-entity-body">
+              <div class="onboarding-grid-2">
+                <div class="onboarding-field">
+                  <label>Upload a profile picture</label>
+                  <div class="upload-field">
+                    <input class="onboarding-input" id="profilePictureInput" type="file" accept="image/*" onchange="updateUploadName(this)">
+                    <label class="upload-drop" for="profilePictureInput">
+                      <span class="upload-drop-icon">⇧</span>
+                      <span class="upload-drop-copy"><strong>Upload profile picture</strong><span>PNG or JPG · Click to select a file</span></span>
+                    </label>
+                    <div class="upload-file-name" id="profilePictureFileName"></div>
+                  </div>
+                </div>
+                <div class="onboarding-field"><label>How many years of professional experience do you have?</label><input class="onboarding-input" type="number" min="0" placeholder="0"></div>
+                <div class="onboarding-field"><label>What time do you get up in the morning?</label><input class="onboarding-input" type="time"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div class="onboarding-step-actions">
+      <button class="btn outline" id="onboardingBackBtn" type="button" onclick="prevOnboarding()">Back</button>
+
+      <div class="footer-stepper" id="onboardingProgress">
+        <div class="footer-step-line">
+          <div class="footer-step-fill" id="footerStepFill"></div>
+        </div>
+        <div class="footer-step-labels">
+          <button class="footer-step-label active" type="button" onclick="goOnboardingStep(0)">Profile &amp; location</button>
+          <button class="footer-step-label" type="button" onclick="goOnboardingStep(1)">Category 1</button>
+          <button class="footer-step-label" type="button" onclick="goOnboardingStep(2)">Category 2</button>
+          <button class="footer-step-label" type="button" onclick="goOnboardingStep(3)">Category 3</button>
+        </div>
+      </div>
+
+      <button class="btn primary" id="onboardingNextBtn" type="button" onclick="nextOnboarding()">Next</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="onboardingSuccessScreen">
+  <div class="onboarding-success">
+    <div class="onboarding-success-wrap">
+      <div class="success-icon">✓</div>
+      <h2>Profile successfully submitted</h2>
+      <p>Thanks for completing your profile. Your information has been sent for review.</p>
+
+      <div class="success-card">
+        <div class="success-card-header">
+          <div class="success-status">Account status: Pending approval</div>
+        </div>
+        <div class="success-card-body">
+          <h3>What happens next?</h3>
+          <p>An administrator will review your profile before granting full access to Ramaz Connect. We’ll notify you by email as soon as your account is approved.</p>
+          <button class="btn primary" onclick="openScreen('opportunitiesScreen','opportunities')">Go to Ramaz Connect</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
